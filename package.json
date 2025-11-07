@@ -1,27 +1,29 @@
 {
   "name": "back-end-projeto-final",
   "version": "1.0.0",
-  "main": "srv.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/beatriztsumoto/Back-End-Projeto-final.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["cupons e desconto", "backend", "database"],
+  "author": "Equipe DeVisions",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/beatriztsumoto/Back-End-Projeto-final/issues"
   },
   "homepage": "https://github.com/beatriztsumoto/Back-End-Projeto-final#readme",
-  "description": "",
+  "description": "API com banco de dados e backend para o site de cupons e descontos",
   "dependencies": {
-    "@prisma/client": "^6.18.0",
+    "@prisma/client": "^6.19.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
-    "prisma": "^6.18.0"
+    "prisma": "^6.19.0"
   }
 }

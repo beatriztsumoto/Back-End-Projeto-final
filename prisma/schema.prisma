@@ -14,6 +14,7 @@ model LOJA {
   LOGO              String?     @db.VarChar(1000)
   CNPJ              String      @db.Char(14)
   TELEFONE_COMERCIAL String     @db.Char(11)
+  ENDERECO          String      @db.VarChar(300)
 
   DESCONTOS         DESCONTOS[]
   CUPONS            CUPONS[]
@@ -49,4 +50,5 @@ model USUARIO {
   TELEFONE       String?  @db.Char(11)
   CEP            String?  @db.Char(8)
   EMAIL          String   @db.VarChar(150)
+  ENDERECO       String   @db.VarChar(300)
 }
