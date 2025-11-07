@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model LOJA {
+  ID_LOJA           Int         @id @default(autoincrement())
+  NOME_SOCIAL       String      @db.VarChar(100)
+  NOME_FANTASIA     String      @db.VarChar(100)
+  LOGO              String?     @db.VarChar(1000)
+  CNPJ              String      @db.Char(14)
+  TELEFONE_COMERCIAL String     @db.Char(11)
+
+  DESCONTOS         DESCONTOS[]
+  CUPONS            CUPONS[]
+}
+
+model DESCONTOS {
+  ID_DESCONTO      Int      @id @default(autoincrement())
+  TITULO           String   @db.VarChar(200)
+  FOTO_ITEM        String   @db.VarChar(1000)
+  VALOR_DESCONTO   Decimal  @db.Decimal(10, 2)
+  DESCRICAO        String   @db.VarChar(500)
+  CATEGORIA        String   @db.VarChar(100)
+  ID_LOJA          Int
+
+  LOJA             LOJA     @relation(fields: [ID_LOJA], references: [ID_LOJA])
+}
+
+model CUPONS {
+  ID_CUPOM    Int      @id @default(autoincrement())
+  TITULO      String   @db.VarChar(200)
+  DESCRICAO   String   @db.VarChar(500)
+  CODIGO      String   @db.VarChar(20)
+  VALIDADE    DateTime @db.Date
+  ID_LOJA     Int
+
+  LOJA        LOJA     @relation(fields: [ID_LOJA], references: [ID_LOJA])
+}
+
+model USUARIO {
+  ID_USUARIO     Int      @id @default(autoincrement())
+  NOME_COMPLETO  String   @db.VarChar(100)
+  SENHA          String   @db.VarChar(15)
+  TELEFONE       String?  @db.Char(11)
+  CEP            String?  @db.Char(8)
+  EMAIL          String   @db.VarChar(150)
+}

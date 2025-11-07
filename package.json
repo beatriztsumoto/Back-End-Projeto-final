@@ -1,0 +1,27 @@
+{
+  "name": "back-end-projeto-final",
+  "version": "1.0.0",
+  "main": "srv.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beatriztsumoto/Back-End-Projeto-final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beatriztsumoto/Back-End-Projeto-final/issues"
+  },
+  "homepage": "https://github.com/beatriztsumoto/Back-End-Projeto-final#readme",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.18.0"
+  }
+}
