@@ -2,6 +2,108 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+// 🏷️ Categorias e produtos realistas
+const categoriasComProdutos = {
+  'Moda e Acessórios': [
+    'Tênis Nike Air Max',
+    'Bolsa Feminina Couro Ecológico',
+    'Relógio Casio Vintage',
+    'Jaqueta Jeans Oversized',
+    'Camiseta Básica Hering',
+  ],
+  'Tecnologia e Eletrônicos': [
+    'Smartband Samsung Galaxy Fit3',
+    'Fone Bluetooth JBL Wave 200TWS',
+    'Notebook Dell Inspiron i5',
+    'Smartwatch Amazfit Bip 5',
+    'Mouse Gamer Redragon Cobra',
+  ],
+  'Casa, Decoração e Utensílios': [
+    'Jogo de Panelas Tramontina 5 Peças',
+    'Cortina Blackout 2,80m',
+    'Kit Organizadores de Gaveta',
+    'Relógio de Parede Moderno',
+    'Tapete Antiderrapante 1,5m',
+  ],
+  'Beleza e Cosméticos': [
+    'Perfume Carolina Herrera Good Girl',
+    'Kit Skincare Nivea',
+    'Secador Taiff Style 2000W',
+    'Máscara Capilar L’Oréal Professionnel',
+    'Base Líquida Ruby Rose',
+  ],
+  'Alimentação e Delivery': [
+    'Pizza Grande + Refrigerante',
+    'Combo de Sushi 30 Peças',
+    'Hambúrguer Artesanal com Batata',
+    'Marmita Fit Semanal',
+    'Açaí 500ml com Granola',
+  ],
+  'Esporte e Lazer': [
+    'Bola de Futebol Adidas',
+    'Bicicleta Caloi Andes',
+    'Colchonete para Yoga',
+    'Halter 10kg Par',
+    'Skate Street Iniciante',
+  ],
+  'Pet Shop e Produtos para Animais': [
+    'Ração Golden Special 15kg',
+    'Caminha Pet Média',
+    'Coleira Antipulgas Seresto',
+    'Brinquedo Mordedor Pet',
+    'Shampoo Neutro para Cães',
+  ],
+  'Educação e Livraria': [
+    'Livro: O Poder do Hábito',
+    'Curso Online de Programação',
+    'Mochila Escolar Reforçada',
+    'Caderno Universitário 10 Matérias',
+    'Canetas Stabilo 10 Cores',
+  ],
+  'Automotivo e Peças': [
+    'Kit de Ferramentas Tramontina',
+    'Aspirador Automotivo Black+Decker',
+    'Central Multimídia Pioneer',
+    'Cera Automotiva 3M',
+    'Tapete de Borracha Universal',
+  ],
+}
+
+// 💰 Faixa de preço por categoria
+function gerarPrecoPorCategoria(categoria) {
+  const ranges = {
+    'Moda e Acessórios': [50, 300],
+    'Tecnologia e Eletrônicos': [100, 2000],
+    'Casa, Decoração e Utensílios': [80, 800],
+    'Beleza e Cosméticos': [30, 200],
+    'Alimentação e Delivery': [20, 100],
+    'Esporte e Lazer': [80, 1000],
+    'Pet Shop e Produtos para Animais': [30, 500],
+    'Educação e Livraria': [40, 300],
+    'Automotivo e Peças': [150, 1500],
+  }
+
+  const [min, max] = ranges[categoria] || [50, 500]
+  return parseFloat((Math.random() * (max - min) + min).toFixed(2))
+}
+
+// 🚀 Função para gerar desconto
+function gerarDesconto(loja) {
+  const categoria = loja.CATEGORIA
+  const produtos = categoriasComProdutos[categoria] || ['Produto Genérico']
+  const produto = produtos[Math.floor(Math.random() * produtos.length)]
+  const preco = gerarPrecoPorCategoria(categoria)
+
+  return {
+    TITULO: produto,
+    FOTO_ITEM: 'https://via.placeholder.com/300x300.png?text=Promoção',
+    VALOR_DESCONTO: preco,
+    DESCRICAO: `Oferta exclusiva na loja ${loja.NOME_FANTASIA}! Desconto em ${produto} da categoria ${categoria}.`,
+    CATEGORIA: categoria,
+    ID_LOJA: loja.ID_LOJA,
+  }
+}
+
 async function main() {
   console.log('🚀 Iniciando seed do banco de dados...')
 
@@ -114,6 +216,7 @@ const lojas = [
     'Paulínia', 'Pedreira', 'Sumaré', 'Valinhos', 'Vinhedo'
   ]
 
+  // 1️⃣ Criar todas as lojas
   for (let i = 0; i < lojas.length; i++) {
     const cidade = cidadesSP[Math.floor(Math.random() * cidadesSP.length)]
     const endereco = `${cidade} - SP`
@@ -132,9 +235,26 @@ const lojas = [
   }
 
   console.log(`✅ ${lojas.length} lojas criadas com sucesso!`)
+
+  // 2️⃣ Criar descontos para cada loja
+  const todasLojas = await prisma.lOJA.findMany()
+
+  for (const loja of todasLojas) {
+    const descontosExistentes = await prisma.dESCONTOS.count({
+      where: { ID_LOJA: loja.ID_LOJA },
+    })
+
+    if (descontosExistentes === 0) {
+      const descontos = Array.from({ length: 3 }, () => gerarDesconto(loja))
+      await prisma.dESCONTOS.createMany({ data: descontos })
+      console.log(`✅ Criados 3 descontos para a loja: ${loja.NOME_FANTASIA}`)
+    } else {
+      console.log(`⏩ Loja ${loja.NOME_FANTASIA} já possui descontos, pulando...`)
+    }
+  }
+
+  console.log('🎉 Seed finalizado com sucesso!')
 }
-
-
 
 main()
   .catch((e) => {
