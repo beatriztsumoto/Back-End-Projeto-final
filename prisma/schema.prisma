@@ -15,6 +15,7 @@ model LOJA {
   CNPJ              String      @db.Char(14)
   TELEFONE_COMERCIAL String     @db.Char(11)
   ENDERECO          String      @db.VarChar(300)
+  CATEGORIA         String        @db.VarChar(100)
 
   DESCONTOS         DESCONTOS[]
   CUPONS            CUPONS[]
@@ -43,12 +44,3 @@ model CUPONS {
   LOJA        LOJA     @relation(fields: [ID_LOJA], references: [ID_LOJA])
 }
 
-model USUARIO {
-  ID_USUARIO     Int      @id @default(autoincrement())
-  NOME_COMPLETO  String   @db.VarChar(100)
-  SENHA          String   @db.VarChar(15)
-  TELEFONE       String?  @db.Char(11)
-  CEP            String?  @db.Char(8)
-  EMAIL          String   @db.VarChar(150)
-  ENDERECO       String   @db.VarChar(300)
-}
