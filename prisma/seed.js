@@ -4,69 +4,246 @@ const prisma = new PrismaClient()
 
 // 🏷️ Categorias e produtos realistas
 const categoriasComProdutos = {
-  'Moda e Acessórios': [
-    'Tênis Nike Air Max',
-    'Bolsa Feminina Couro Ecológico',
-    'Relógio Casio Vintage',
-    'Jaqueta Jeans Oversized',
-    'Camiseta Básica Hering',
+  "Moda e Acessórios": [
+    { nome: "Vestido Floral Longo", imagem: "https://placehold.co/300x300?text=Vestido+Floral+Longo" },
+    { nome: "Blusa Cropped Feminina", imagem: "https://placehold.co/300x300?text=Blusa+Cropped+Feminina" },
+    { nome: "Calça Jeans Skinny", imagem: "https://placehold.co/300x300?text=Calça+Jeans+Skinny" },
+    { nome: "Jaqueta de Couro Sintético", imagem: "https://placehold.co/300x300?text=Jaqueta+de+Couro+Sintético" },
+    { nome: "Saia Midi Plissada", imagem: "https://placehold.co/300x300?text=Saia+Midi+Plissada" },
+    { nome: "Camiseta Oversized Masculina", imagem: "https://placehold.co/300x300?text=Camiseta+Oversized+Masculina" },
+    { nome: "Tênis Branco Casual", imagem: "https://placehold.co/300x300?text=Tênis+Branco+Casual" },
+    { nome: "Tênis Nike Air Max", imagem: "https://placehold.co/300x300?text=Tênis+Nike+Air+Max" },
+    { nome: "Bota Feminina Cano Curto", imagem: "https://placehold.co/300x300?text=Bota+Feminina+Cano+Curto" },
+    { nome: "Sandália Anabela", imagem: "https://placehold.co/300x300?text=Sandália+Anabela" },
+    { nome: "Mochila de Couro", imagem: "https://placehold.co/300x300?text=Mochila+de+Couro" },
+    { nome: "Bolsa Tiracolo Pequena", imagem: "https://placehold.co/300x300?text=Bolsa+Tiracolo+Pequena" },
+    { nome: "Boné Aba Reta", imagem: "https://placehold.co/300x300?text=Boné+Aba+Reta" },
+    { nome: "Relógio de Pulso Masculino", imagem: "https://placehold.co/300x300?text=Relógio+de+Pulso+Masculino" },
+    { nome: "Óculos de Sol Feminino", imagem: "https://placehold.co/300x300?text=Óculos+de+Sol+Feminino" },
+    { nome: "Pulseira de Prata 925", imagem: "https://placehold.co/300x300?text=Pulseira+de+Prata+925" },
+    { nome: "Colar Dourado Minimalista", imagem: "https://placehold.co/300x300?text=Colar+Dourado+Minimalista" },
+    { nome: "Brinco Argola Média", imagem: "https://placehold.co/300x300?text=Brinco+Argola+Média" },
+    { nome: "Carteira de Couro Masculina", imagem: "https://placehold.co/300x300?text=Carteira+de+Couro+Masculina" },
+    { nome: "Cinto Feminino Fino", imagem: "https://placehold.co/300x300?text=Cinto+Feminino+Fino" },
+    { nome: "Chapéu de Palha Verão", imagem: "https://placehold.co/300x300?text=Chapéu+de+Palha+Verão" },
+    { nome: "Blazer Alfaiataria", imagem: "https://placehold.co/300x300?text=Blazer+Alfaiataria" },
+    { nome: "Short Jeans Desfiado", imagem: "https://placehold.co/300x300?text=Short+Jeans+Desfiado" },
+    { nome: "Casaco Moletom Unissex", imagem: "https://placehold.co/300x300?text=Casaco+Moletom+Unissex" },
+    { nome: "Meia Colorida Estampada", imagem: "https://placehold.co/300x300?text=Meia+Colorida+Estampada" },
+    { nome: "Relógio Smartwatch", imagem: "https://placehold.co/300x300?text=Relógio+Smartwatch" },
+    { nome: "Tênis Esportivo Adidas", imagem: "https://placehold.co/300x300?text=Tênis+Esportivo+Adidas" },
+    { nome: "Camisa Polo Masculina", imagem: "https://placehold.co/300x300?text=Camisa+Polo+Masculina" },
+    { nome: "Vestido de Festa Curto", imagem: "https://placehold.co/300x300?text=Vestido+de+Festa+Curto" },
+    { nome: "Jaqueta Jeans Feminina", imagem: "https://placehold.co/300x300?text=Jaqueta+Jeans+Feminina" },
+    { nome: "Macacão Pantalona", imagem: "https://placehold.co/300x300?text=Macacão+Pantalona" },
+    { nome: "Saia Jeans Curta", imagem: "https://placehold.co/300x300?text=Saia+Jeans+Curta" },
+    { nome: "Bolsa de Praia", imagem: "https://placehold.co/300x300?text=Bolsa+de+Praia" },
+    { nome: "Tênis All Star Branco", imagem: "https://placehold.co/300x300?text=Tênis+All+Star+Branco" },
+    { nome: "Luvas de Inverno", imagem: "https://placehold.co/300x300?text=Luvas+de+Inverno" },
+    { nome: "Touca de Lã Unissex", imagem: "https://placehold.co/300x300?text=Touca+de+Lã+Unissex" },
+    { nome: "Blusa Canelada Manga Longa", imagem: "https://placehold.co/300x300?text=Blusa+Canelada+Manga+Longa" },
+    { nome: "Calça Jogger Moletom", imagem: "https://placehold.co/300x300?text=Calça+Jogger+Moletom" },
+    { nome: "Vestido Midi Liso", imagem: "https://placehold.co/300x300?text=Vestido+Midi+Liso" },
+    { nome: "Bermuda Masculina Sarja", imagem: "https://placehold.co/300x300?text=Bermuda+Masculina+Sarja" }
   ],
-  'Tecnologia e Eletrônicos': [
-    'Smartband Samsung Galaxy Fit3',
-    'Fone Bluetooth JBL Wave 200TWS',
-    'Notebook Dell Inspiron i5',
-    'Smartwatch Amazfit Bip 5',
-    'Mouse Gamer Redragon Cobra',
+
+  "Tecnologia e Eletrônicos": [
+    { nome: "Smartphone Samsung Galaxy S23", imagem: "https://placehold.co/300x300?text=Smartphone+Samsung+Galaxy+S23" },
+    { nome: "iPhone 15 Pro", imagem: "https://placehold.co/300x300?text=iPhone+15+Pro" },
+    { nome: "Notebook Dell Inspiron i7", imagem: "https://placehold.co/300x300?text=Notebook+Dell+Inspiron+i7" },
+    { nome: "Fone Bluetooth JBL Wave 200TWS", imagem: "https://placehold.co/300x300?text=Fone+Bluetooth+JBL+Wave+200TWS" },
+    { nome: "Caixa de Som Alexa Echo Dot", imagem: "https://placehold.co/300x300?text=Caixa+de+Som+Alexa+Echo+Dot" },
+    { nome: "Tablet Samsung Galaxy Tab S9", imagem: "https://placehold.co/300x300?text=Tablet+Samsung+Galaxy+Tab+S9" },
+    { nome: "Monitor Gamer LG Ultrawide", imagem: "https://placehold.co/300x300?text=Monitor+Gamer+LG+Ultrawide" },
+    { nome: "Smartwatch Amazfit Bip 5", imagem: "https://placehold.co/300x300?text=Smartwatch+Amazfit+Bip+5" },
+    { nome: "Teclado Mecânico Redragon Kumara", imagem: "https://placehold.co/300x300?text=Teclado+Mecânico+Redragon+Kumara" },
+    { nome: "Mouse Gamer Logitech G Pro", imagem: "https://placehold.co/300x300?text=Mouse+Gamer+Logitech+G+Pro" },
+    { nome: "Câmera GoPro Hero 12", imagem: "https://placehold.co/300x300?text=Câmera+GoPro+Hero+12" },
+    { nome: "Headset HyperX Cloud II", imagem: "https://placehold.co/300x300?text=Headset+HyperX+Cloud+II" },
+    { nome: "Smart TV LG 50 Polegadas 4K", imagem: "https://placehold.co/300x300?text=Smart+TV+LG+50+Polegadas+4K" },
+    { nome: "HD Externo 2TB Seagate", imagem: "https://placehold.co/300x300?text=HD+Externo+2TB+Seagate" },
+    { nome: "Pendrive SanDisk 64GB", imagem: "https://placehold.co/300x300?text=Pendrive+SanDisk+64GB" },
+    { nome: "Webcam Logitech C920", imagem: "https://placehold.co/300x300?text=Webcam+Logitech+C920" },
+    { nome: "Carregador Portátil Powerbank 20.000mAh", imagem: "https://placehold.co/300x300?text=Powerbank+20000mAh" },
+    { nome: "Console PlayStation 5", imagem: "https://placehold.co/300x300?text=Console+PlayStation+5" },
+    { nome: "Controle Xbox Series X", imagem: "https://placehold.co/300x300?text=Controle+Xbox+Series+X" },
+    { nome: "Placa de Vídeo RTX 4060", imagem: "https://placehold.co/300x300?text=Placa+de+Vídeo+RTX+4060" },
+    { nome: "Roteador TP-Link Wi-Fi 6", imagem: "https://placehold.co/300x300?text=Roteador+TP-Link+Wi-Fi+6" },
+    { nome: "Impressora Multifuncional Epson EcoTank", imagem: "https://placehold.co/300x300?text=Impressora+Epson+EcoTank" },
+    { nome: "Drone DJI Mini 4 Pro", imagem: "https://placehold.co/300x300?text=Drone+DJI+Mini+4+Pro" },
+    { nome: "Câmera de Segurança Intelbras Wi-Fi", imagem: "https://placehold.co/300x300?text=Câmera+de+Segurança+Intelbras" },
+    { nome: "Caixa de Som JBL Flip 6", imagem: "https://placehold.co/300x300?text=Caixa+de+Som+JBL+Flip+6" }
   ],
-  'Casa, Decoração e Utensílios': [
-    'Jogo de Panelas Tramontina 5 Peças',
-    'Cortina Blackout 2,80m',
-    'Kit Organizadores de Gaveta',
-    'Relógio de Parede Moderno',
-    'Tapete Antiderrapante 1,5m',
+
+  "Casa, Decoração e Utensílios": [
+    { nome: "Sofá Retrátil 3 Lugares", imagem: "https://placehold.co/300x300?text=Sofá+Retrátil+3+Lugares" },
+    { nome: "Cortina Blackout 2,80m", imagem: "https://placehold.co/300x300?text=Cortina+Blackout+2,80m" },
+    { nome: "Jogo de Panelas Tramontina 5 Peças", imagem: "https://placehold.co/300x300?text=Jogo+de+Panelas+Tramontina+5+Peças" },
+    { nome: "Tapete Shaggy 2x3m", imagem: "https://placehold.co/300x300?text=Tapete+Shaggy+2x3m" },
+    { nome: "Kit Organizadores de Gaveta", imagem: "https://placehold.co/300x300?text=Kit+Organizadores+de+Gaveta" },
+    { nome: "Espelho Decorativo Redondo", imagem: "https://placehold.co/300x300?text=Espelho+Decorativo+Redondo" },
+    { nome: "Relógio de Parede Moderno", imagem: "https://placehold.co/300x300?text=Relógio+de+Parede+Moderno" },
+    { nome: "Abajur de Mesa Madeira", imagem: "https://placehold.co/300x300?text=Abajur+de+Mesa+Madeira" },
+    { nome: "Quadro Decorativo Floral", imagem: "https://placehold.co/300x300?text=Quadro+Decorativo+Floral" },
+    { nome: "Colcha Queen 3 Peças", imagem: "https://placehold.co/300x300?text=Colcha+Queen+3+Peças" },
+    { nome: "Travesseiro de Fibra Siliconada", imagem: "https://placehold.co/300x300?text=Travesseiro+de+Fibra+Siliconada" },
+    { nome: "Prateleira de Madeira Rústica", imagem: "https://placehold.co/300x300?text=Prateleira+de+Madeira+Rústica" },
+    { nome: "Jogo de Toalhas de Banho", imagem: "https://placehold.co/300x300?text=Jogo+de+Toalhas+de+Banho" },
+    { nome: "Cadeira de Jantar Estofada", imagem: "https://placehold.co/300x300?text=Cadeira+de+Jantar+Estofada" },
+    { nome: "Mesa Lateral de Apoio", imagem: "https://placehold.co/300x300?text=Mesa+Lateral+de+Apoio" },
+    { nome: "Kit Potes Herméticos Cozinha", imagem: "https://placehold.co/300x300?text=Kit+Potes+Herméticos+Cozinha" },
+    { nome: "Cesto de Roupa Dobrável", imagem: "https://placehold.co/300x300?text=Cesto+de+Roupa+Dobrável" },
+    { nome: "Jogo de Copos de Vidro", imagem: "https://placehold.co/300x300?text=Jogo+de+Copos+de+Vidro" }
   ],
-  'Beleza e Cosméticos': [
-    'Perfume Carolina Herrera Good Girl',
-    'Kit Skincare Nivea',
-    'Secador Taiff Style 2000W',
-    'Máscara Capilar L’Oréal Professionnel',
-    'Base Líquida Ruby Rose',
+
+  "Eletrodomésticos e Móveis": [
+    { nome: "Geladeira Brastemp Frost Free 400L", imagem: "https://placehold.co/300x300?text=Geladeira+Brastemp+Frost+Free+400L" },
+    { nome: "Fogão 4 Bocas Atlas", imagem: "https://placehold.co/300x300?text=Fogão+4+Bocas+Atlas" },
+    { nome: "Micro-ondas Electrolux 20L", imagem: "https://placehold.co/300x300?text=Micro-ondas+Electrolux+20L" },
+    { nome: "Máquina de Lavar 12kg", imagem: "https://placehold.co/300x300?text=Máquina+de+Lavar+12kg" },
+    { nome: "Cafeteira Nespresso Essenza", imagem: "https://placehold.co/300x300?text=Cafeteira+Nespresso+Essenza" },
+    { nome: "Liquidificador Philips Walita", imagem: "https://placehold.co/300x300?text=Liquidificador+Philips+Walita" },
+    { nome: "Aspirador de Pó Vertical", imagem: "https://placehold.co/300x300?text=Aspirador+de+Pó+Vertical" },
+    { nome: "Fritadeira Airfryer 4L", imagem: "https://placehold.co/300x300?text=Fritadeira+Airfryer+4L" },
+    { nome: "Sofá Retrátil 3 Lugares", imagem: "https://placehold.co/300x300?text=Sofá+Retrátil+3+Lugares" },
+    { nome: "Mesa de Jantar 4 Cadeiras", imagem: "https://placehold.co/300x300?text=Mesa+de+Jantar+4+Cadeiras" },
+    { nome: "Cama Box Casal", imagem: "https://placehold.co/300x300?text=Cama+Box+Casal" },
+    { nome: "Colchão Ortobom Casal", imagem: "https://placehold.co/300x300?text=Colchão+Ortobom+Casal" },
+    { nome: "Guarda-Roupa 6 Portas", imagem: "https://placehold.co/300x300?text=Guarda-Roupa+6+Portas" },
+    { nome: "Ventilador de Mesa 40cm", imagem: "https://placehold.co/300x300?text=Ventilador+de+Mesa+40cm" },
+    { nome: "Ferro de Passar a Vapor", imagem: "https://placehold.co/300x300?text=Ferro+de+Passar+a+Vapor" },
+    { nome: "Batedeira Planetária", imagem: "https://placehold.co/300x300?text=Batedeira+Planetária" },
+    { nome: "Panela de Pressão Elétrica", imagem: "https://placehold.co/300x300?text=Panela+de+Pressão+Elétrica" },
+    { nome: "Aquecedor de Ar Elétrico", imagem: "https://placehold.co/300x300?text=Aquecedor+de+Ar+Elétrico" },
+    { nome: "Torradeira Elétrica", imagem: "https://placehold.co/300x300?text=Torradeira+Elétrica" },
+    { nome: "Aparador de Barba Philips", imagem: "https://placehold.co/300x300?text=Aparador+de+Barba+Philips" }
   ],
-  'Alimentação e Delivery': [
-    'Pizza Grande + Refrigerante',
-    'Combo de Sushi 30 Peças',
-    'Hambúrguer Artesanal com Batata',
-    'Marmita Fit Semanal',
-    'Açaí 500ml com Granola',
+
+  "Beleza e Cosméticos": [
+    { nome: "Base Líquida Matte Vult", imagem: "https://placehold.co/300x300?text=Base+Líquida+Matte+Vult" },
+    { nome: "Batom Vermelho Intenso", imagem: "https://placehold.co/300x300?text=Batom+Vermelho+Intenso" },
+    { nome: "Perfume Carolina Herrera 212", imagem: "https://placehold.co/300x300?text=Perfume+Carolina+Herrera+212" },
+    { nome: "Paleta de Sombras Ruby Rose", imagem: "https://placehold.co/300x300?text=Paleta+de+Sombras+Ruby+Rose" },
+    { nome: "Máscara de Cílios Maybelline", imagem: "https://placehold.co/300x300?text=Máscara+de+Cílios+Maybelline" },
+    { nome: "Creme Hidratante Nivea", imagem: "https://placehold.co/300x300?text=Creme+Hidratante+Nivea" },
+    { nome: "Protetor Solar FPS 50", imagem: "https://placehold.co/300x300?text=Protetor+Solar+FPS+50" },
+    { nome: "Esmalte Colorama Nude", imagem: "https://placehold.co/300x300?text=Esmalte+Colorama+Nude" },
+    { nome: "Kit Pincéis de Maquiagem", imagem: "https://placehold.co/300x300?text=Kit+Pincéis+de+Maquiagem" },
+    { nome: "Sabonete Facial Neutrogena", imagem: "https://placehold.co/300x300?text=Sabonete+Facial+Neutrogena" },
+    { nome: "Shampoo L’Oréal Professionnel", imagem: "https://placehold.co/300x300?text=Shampoo+L’Oréal+Professionnel" },
+    { nome: "Condicionador Dove Nutritivo", imagem: "https://placehold.co/300x300?text=Condicionador+Dove+Nutritivo" },
+    { nome: "Óleo Capilar Moroccanoil", imagem: "https://placehold.co/300x300?text=Óleo+Capilar+Moroccanoil" },
+    { nome: "Creme Anti-Idade Nivea Q10", imagem: "https://placehold.co/300x300?text=Creme+Anti-Idade+Nivea+Q10" },
+    { nome: "Desodorante Rexona Clinical", imagem: "https://placehold.co/300x300?text=Desodorante+Rexona+Clinical" },
+    { nome: "Bálsamo Pós-Barba Gillette", imagem: "https://placehold.co/300x300?text=Bálsamo+Pós-Barba+Gillette" },
+    { nome: "Kit Skincare Completo", imagem: "https://placehold.co/300x300?text=Kit+Skincare+Completo" },
+    { nome: "Perfume Dior Sauvage", imagem: "https://placehold.co/300x300?text=Perfume+Dior+Sauvage" }
   ],
-  'Esporte e Lazer': [
-    'Bola de Futebol Adidas',
-    'Bicicleta Caloi Andes',
-    'Colchonete para Yoga',
-    'Halter 10kg Par',
-    'Skate Street Iniciante',
+
+  "Saúde e Farmácia": [
+    { nome: "Suplemento Vitamínico Centrum Mulher", imagem: "https://placehold.co/300x300?text=Suplemento+Vitamínico+Centrum+Mulher" },
+    { nome: "Protetor Solar Nivea Sun FPS 60", imagem: "https://placehold.co/300x300?text=Protetor+Solar+Nivea+Sun+FPS+60" },
+    { nome: "Termômetro Digital G-Tech", imagem: "https://placehold.co/300x300?text=Termômetro+Digital+G-Tech" },
+    { nome: "Aparelho de Pressão Omron Automático", imagem: "https://placehold.co/300x300?text=Aparelho+de+Pressão+Omron+Automático" },
+    { nome: "Máscara Descartável Tripla Proteção", imagem: "https://placehold.co/300x300?text=Máscara+Descartável+Tripla+Proteção" },
+    { nome: "Álcool em Gel Antisséptico 500ml", imagem: "https://placehold.co/300x300?text=Álcool+em+Gel+Antisséptico+500ml" }
   ],
-  'Pet Shop e Produtos para Animais': [
-    'Ração Golden Special 15kg',
-    'Caminha Pet Média',
-    'Coleira Antipulgas Seresto',
-    'Brinquedo Mordedor Pet',
-    'Shampoo Neutro para Cães',
+
+  "Alimentação e Delivery": [
+    { nome: "Pizza Grande Calabresa", imagem: "https://placehold.co/300x300?text=Pizza+Grande+Calabresa" },
+    { nome: "Hambúrguer Duplo com Queijo", imagem: "https://placehold.co/300x300?text=Hambúrguer+Duplo+com+Queijo" },
+    { nome: "Sushi Combo 20 Peças", imagem: "https://placehold.co/300x300?text=Sushi+Combo+20+Peças" },
+    { nome: "Açaí com Granola 500ml", imagem: "https://placehold.co/300x300?text=Açaí+com+Granola+500ml" },
+    { nome: "Marmita Fit Frango e Batata Doce", imagem: "https://placehold.co/300x300?text=Marmita+Fit+Frango+e+Batata+Doce" },
+    { nome: "Coxinha de Frango com Catupiry", imagem: "https://placehold.co/300x300?text=Coxinha+de+Frango+com+Catupiry" },
+    { nome: "Brownie de Chocolate Artesanal", imagem: "https://placehold.co/300x300?text=Brownie+de+Chocolate+Artesanal" },
+    { nome: "Refrigerante Lata 350ml", imagem: "https://placehold.co/300x300?text=Refrigerante+Lata+350ml" },
+    { nome: "Suco Natural de Laranja 500ml", imagem: "https://placehold.co/300x300?text=Suco+Natural+de+Laranja+500ml" },
+    { nome: "Lasanha à Bolonhesa", imagem: "https://placehold.co/300x300?text=Lasanha+à+Bolonhesa" },
+    { nome: "Esfiha Aberta de Carne", imagem: "https://placehold.co/300x300?text=Esfiha+Aberta+de+Carne" },
+    { nome: "Hot Dog Completo", imagem: "https://placehold.co/300x300?text=Hot+Dog+Completo" },
+    { nome: "Sorvete Artesanal 2 Sabores", imagem: "https://placehold.co/300x300?text=Sorvete+Artesanal+2+Sabores" },
+    { nome: "Tapioca de Queijo com Coco", imagem: "https://placehold.co/300x300?text=Tapioca+de+Queijo+com+Coco" },
+    { nome: "Combo Pastel e Caldo de Cana", imagem: "https://placehold.co/300x300?text=Combo+Pastel+e+Caldo+de+Cana" },
+    { nome: "Café Espresso + Pão de Queijo", imagem: "https://placehold.co/300x300?text=Café+Espresso+e+Pão+de+Queijo" },
+    { nome: "Salgados Sortidos 25 Unidades", imagem: "https://placehold.co/300x300?text=Salgados+Sortidos+25+Unidades" },
+    { nome: "Torta de Frango Caseira", imagem: "https://placehold.co/300x300?text=Torta+de+Frango+Caseira" },
+    { nome: "Pão Artesanal Integral", imagem: "https://placehold.co/300x300?text=Pão+Artesanal+Integral" },
+    { nome: "Batata Frita com Cheddar e Bacon", imagem: "https://placehold.co/300x300?text=Batata+Frita+com+Cheddar+e+Bacon" },
+    { nome: "Crepe Doce de Morango e Chocolate", imagem: "https://placehold.co/300x300?text=Crepe+Doce+de+Morango+e+Chocolate" },
+    { nome: "Combo Sushi e Yakisoba", imagem: "https://placehold.co/300x300?text=Combo+Sushi+e+Yakisoba" },
+    { nome: "Macarrão à Carbonara", imagem: "https://placehold.co/300x300?text=Macarrão+à+Carbonara" },
+    { nome: "Frango Frito Crocante 10 Unidades", imagem: "https://placehold.co/300x300?text=Frango+Frito+Crocante+10+Unidades" },
+    { nome: "Panqueca de Carne com Molho", imagem: "https://placehold.co/300x300?text=Panqueca+de+Carne+com+Molho" },
+    { nome: "Milkshake de Ovomaltine 500ml", imagem: "https://placehold.co/300x300?text=Milkshake+de+Ovomaltine+500ml" },
+    { nome: "Salada Caesar com Frango", imagem: "https://placehold.co/300x300?text=Salada+Caesar+com+Frango" },
+    { nome: "Empadão de Frango com Catupiry", imagem: "https://placehold.co/300x300?text=Empadão+de+Frango+com+Catupiry" },
+    { nome: "Combo Hambúrguer + Refrigerante", imagem: "https://placehold.co/300x300?text=Combo+Hambúrguer+e+Refrigerante" },
+    { nome: "Tábua de Frios Premium", imagem: "https://placehold.co/300x300?text=Tábua+de+Frios+Premium" }
   ],
-  'Educação e Livraria': [
-    'Livro: O Poder do Hábito',
-    'Curso Online de Programação',
-    'Mochila Escolar Reforçada',
-    'Caderno Universitário 10 Matérias',
-    'Canetas Stabilo 10 Cores',
+
+  "Esporte e Lazer": [
+    { nome: "Bola de Futebol Adidas Oficial", imagem: "https://placehold.co/300x300?text=Bola+de+Futebol+Adidas+Oficial" },
+    { nome: "Bicicleta Caloi Aro 29", imagem: "https://placehold.co/300x300?text=Bicicleta+Caloi+Aro+29" },
+    { nome: "Tênis de Corrida Asics Gel", imagem: "https://placehold.co/300x300?text=Tênis+de+Corrida+Asics+Gel" },
+    { nome: "Colchonete para Yoga", imagem: "https://placehold.co/300x300?text=Colchonete+para+Yoga" },
+    { nome: "Raquete de Tênis Wilson", imagem: "https://placehold.co/300x300?text=Raquete+de+Tênis+Wilson" },
+    { nome: "Kit Halteres 10kg", imagem: "https://placehold.co/300x300?text=Kit+Halteres+10kg" },
+    { nome: "Mochila Esportiva Nike", imagem: "https://placehold.co/300x300?text=Mochila+Esportiva+Nike" },
+    { nome: "Óculos de Natação Speedo", imagem: "https://placehold.co/300x300?text=Óculos+de+Natação+Speedo" },
+    { nome: "Camiseta Dry Fit Adidas", imagem: "https://placehold.co/300x300?text=Camiseta+Dry+Fit+Adidas" },
+    { nome: "Skate Completo Profissional", imagem: "https://placehold.co/300x300?text=Skate+Completo+Profissional" },
+    { nome: "Corda de Pular Emborrachada", imagem: "https://placehold.co/300x300?text=Corda+de+Pular+Emborrachada" },
+    { nome: "Barraca de Camping 4 Pessoas", imagem: "https://placehold.co/300x300?text=Barraca+de+Camping+4+Pessoas" }
   ],
-  'Automotivo e Peças': [
-    'Kit de Ferramentas Tramontina',
-    'Aspirador Automotivo Black+Decker',
-    'Central Multimídia Pioneer',
-    'Cera Automotiva 3M',
-    'Tapete de Borracha Universal',
+
+  "Pet Shop e Produtos para Animais": [
+    { nome: "Ração Premium Cães Adultos 10kg", imagem: "https://placehold.co/300x300?text=Ração+Premium+Cães+Adultos+10kg" },
+    { nome: "Areia Higiênica Gatos 4kg", imagem: "https://placehold.co/300x300?text=Areia+Higiênica+Gatos+4kg" },
+    { nome: "Brinquedo Mordedor Cães", imagem: "https://placehold.co/300x300?text=Brinquedo+Mordedor+Cães" },
+    { nome: "Coleira Antipulgas Bayer", imagem: "https://placehold.co/300x300?text=Coleira+Antipulgas+Bayer" }
   ],
+
+  "Educação e Livraria": [
+    { nome: "Livro: O Pequeno Príncipe", imagem: "https://placehold.co/300x300?text=Livro+O+Pequeno+Príncipe" },
+    { nome: "Caderno Universitário 200 folhas", imagem: "https://placehold.co/300x300?text=Caderno+Universitário+200+folhas" },
+    { nome: "Dicionário de Português Moderno", imagem: "https://placehold.co/300x300?text=Dicionário+de+Português+Moderno" },
+    { nome: "Curso Online de Programação Web", imagem: "https://placehold.co/300x300?text=Curso+Online+de+Programação+Web" }
+  ],
+
+  "Bebê e Criança": [
+    { nome: "Carrinho de Bebê Galzerano Maranello", imagem: "https://placehold.co/300x300?text=Carrinho+de+Bebê+Galzerano+Maranello" },
+    { nome: "Kit Mamadeira Avent Philips", imagem: "https://placehold.co/300x300?text=Kit+Mamadeira+Avent+Philips" },
+    { nome: "Brinquedo Educativo de Montar", imagem: "https://placehold.co/300x300?text=Brinquedo+Educativo+de+Montar" }
+  ],
+
+  "Papelaria e Escritório": [
+    { nome: "Caneta Esferográfica Azul Bic", imagem: "https://placehold.co/300x300?text=Caneta+Esferográfica+Azul+Bic" },
+    { nome: "Agenda 2025 Capa Dura", imagem: "https://placehold.co/300x300?text=Agenda+2025+Capa+Dura" },
+    { nome: "Pacote de Folhas A4 500 Unidades", imagem: "https://placehold.co/300x300?text=Pacote+de+Folhas+A4+500+Unidades" },
+    { nome: "Grampeador Metálico Pequeno", imagem: "https://placehold.co/300x300?text=Grampeador+Metálico+Pequeno" }
+  ],
+
+  "Serviços e Financeiros": [
+    { nome: "Plano de Saúde Familiar", imagem: "https://placehold.co/300x300?text=Plano+de+Saúde+Familiar" },
+    { nome: "Seguro Automotivo Completo", imagem: "https://placehold.co/300x300?text=Seguro+Automotivo+Completo" },
+    { nome: "Curso de Inglês Online", imagem: "https://placehold.co/300x300?text=Curso+de+Inglês+Online" },
+    { nome: "Consultoria Financeira Pessoal", imagem: "https://placehold.co/300x300?text=Consultoria+Financeira+Pessoal" },
+    { nome: "Plano de Academia Mensal", imagem: "https://placehold.co/300x300?text=Plano+de+Academia+Mensal" },
+    { nome: "Serviço de Streaming Anual", imagem: "https://placehold.co/300x300?text=Serviço+de+Streaming+Anual" },
+    { nome: "Revisão de Currículo Profissional", imagem: "https://placehold.co/300x300?text=Revisão+de+Currículo+Profissional" },
+    { nome: "Seguro Viagem Internacional", imagem: "https://placehold.co/300x300?text=Seguro+Viagem+Internacional" },
+    { nome: "Curso de Marketing Digital", imagem: "https://placehold.co/300x300?text=Curso+de+Marketing+Digital" },
+    { nome: "Consultoria Jurídica Online", imagem: "https://placehold.co/300x300?text=Consultoria+Jurídica+Online" },
+    { nome: "Serviço de Limpeza Residencial", imagem: "https://placehold.co/300x300?text=Serviço+de+Limpeza+Residencial" },
+    { nome: "Plano de Internet Fibra 500MB", imagem: "https://placehold.co/300x300?text=Plano+de+Internet+Fibra+500MB" },
+    { nome: "Manutenção de Computadores", imagem: "https://placehold.co/300x300?text=Manutenção+de+Computadores" },
+    { nome: "Aulas Particulares Online", imagem: "https://placehold.co/300x300?text=Aulas+Particulares+Online" },
+    { nome: "Assessoria Contábil Mensal", imagem: "https://placehold.co/300x300?text=Assessoria+Contábil+Mensal" },
+    { nome: "Curso de Finanças Pessoais", imagem: "https://placehold.co/300x300?text=Curso+de+Finanças+Pessoais" },
+    { nome: "Consultoria de Imagem e Estilo", imagem: "https://placehold.co/300x300?text=Consultoria+de+Imagem+e+Estilo" },
+    { nome: "Serviço de Entrega Expressa", imagem: "https://placehold.co/300x300?text=Serviço+de+Entrega+Expressa" }
+  ]
 }
 
 // 💰 Faixa de preço por categoria
@@ -75,12 +252,16 @@ function gerarPrecoPorCategoria(categoria) {
     'Moda e Acessórios': [50, 300],
     'Tecnologia e Eletrônicos': [100, 2000],
     'Casa, Decoração e Utensílios': [80, 800],
+    'Eletrodomésticos e Móveis': [200, 3000],
     'Beleza e Cosméticos': [30, 200],
+    'Saúde e Farmácia': [20, 150],
     'Alimentação e Delivery': [20, 100],
     'Esporte e Lazer': [80, 1000],
     'Pet Shop e Produtos para Animais': [30, 500],
     'Educação e Livraria': [40, 300],
-    'Automotivo e Peças': [150, 1500],
+    'Bebê e Criança': [50, 800],
+    'Papelaria e Escritório': [10, 200],
+    'Serviços e Financeiros': [50, 1000],
   }
 
   const [min, max] = ranges[categoria] || [50, 500]
@@ -90,15 +271,15 @@ function gerarPrecoPorCategoria(categoria) {
 // 🚀 Função para gerar desconto
 function gerarDesconto(loja) {
   const categoria = loja.CATEGORIA
-  const produtos = categoriasComProdutos[categoria] || ['Produto Genérico']
-  const produto = produtos[Math.floor(Math.random() * produtos.length)]
+  const produtos = categoriasComProdutos[categoria] || []
+  const produto = produtos[Math.floor(Math.random() * produtos.length)] || { nome: 'Produto Genérico', imagem: 'https://placehold.co/300x300?text=Promoção' }
   const preco = gerarPrecoPorCategoria(categoria)
 
   return {
-    TITULO: produto,
-    FOTO_ITEM: 'https://via.placeholder.com/300x300.png?text=Promoção',
+    TITULO: produto.nome,
+    FOTO_ITEM: produto.imagem,
     VALOR_DESCONTO: preco,
-    DESCRICAO: `Oferta exclusiva na loja ${loja.NOME_FANTASIA}! Desconto em ${produto} da categoria ${categoria}.`,
+    DESCRICAO: `Oferta exclusiva na loja ${loja.NOME_FANTASIA}! Desconto imperdível em ${produto.nome} da categoria ${categoria}.`,
     CATEGORIA: categoria,
     ID_LOJA: loja.ID_LOJA,
   }
