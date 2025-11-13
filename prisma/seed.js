@@ -285,6 +285,86 @@ function gerarDesconto(loja) {
   }
 }
 
+// 🧾 Modelos de cupons (50 variações realistas)
+const modelosDeCupons = [
+  { titulo: "10% OFF em toda a loja {LOJA}", descricao: "Aproveite 10% de desconto em qualquer compra feita na {LOJA}. Válido por tempo limitado!" },
+  { titulo: "15% OFF em produtos selecionados da {LOJA}", descricao: "Desconto especial de 15% em itens selecionados da {LOJA}. Não perca!" },
+  { titulo: "Frete grátis nas compras acima de R$99 na {LOJA}", descricao: "Economize no frete! Compras acima de R$99 têm envio grátis na {LOJA}." },
+  { titulo: "R$20 OFF em compras acima de R$150 na {LOJA}", descricao: "Ganhe R$20 de desconto em pedidos acima de R$150 na {LOJA}." },
+  { titulo: "25% OFF na categoria de Moda da {LOJA}", descricao: "Desconto imperdível de 25% em roupas e acessórios na {LOJA}." },
+  { titulo: "Ganhe um brinde nas compras acima de R$200 na {LOJA}", descricao: "A {LOJA} vai te mimar! Brinde especial em compras a partir de R$200." },
+  { titulo: "30% OFF em produtos de tecnologia na {LOJA}", descricao: "Ofertas incríveis em eletrônicos e gadgets. 30% de desconto na {LOJA}!" },
+  { titulo: "40% OFF em itens de beleza da {LOJA}", descricao: "Renove seu visual com 40% de desconto nos produtos de beleza da {LOJA}." },
+  { titulo: "Desconto progressivo na {LOJA}", descricao: "Compre mais e pague menos! Descontos crescentes em compras na {LOJA}." },
+  { titulo: "5% OFF na sua primeira compra na {LOJA}", descricao: "Novo por aqui? Ganhe 5% OFF na sua primeira compra na {LOJA}!" },
+  { titulo: "50% OFF em produtos selecionados da {LOJA}", descricao: "Metade do preço em itens especiais! Confira na {LOJA}." },
+  { titulo: "Cupom de R$10 OFF em qualquer pedido da {LOJA}", descricao: "Use o cupom e ganhe R$10 de desconto em qualquer pedido na {LOJA}." },
+  { titulo: "20% OFF em móveis e decoração na {LOJA}", descricao: "Deixe sua casa mais bonita com 20% de desconto na {LOJA}." },
+  { titulo: "Até 70% OFF no saldão da {LOJA}", descricao: "Saldão de oportunidades! Descontos de até 70% em produtos na {LOJA}." },
+  { titulo: "Ganhe cashback de 10% em compras na {LOJA}", descricao: "Compre e receba 10% do valor de volta em cashback na {LOJA}." },
+  { titulo: "Frete grátis + 10% OFF na {LOJA}", descricao: "Combo perfeito: frete grátis e 10% de desconto em toda a {LOJA}." },
+  { titulo: "R$50 OFF em compras acima de R$300 na {LOJA}", descricao: "Descontão de R$50 em pedidos acima de R$300 na {LOJA}. Aproveite!" },
+  { titulo: "Desconto exclusivo para membros na {LOJA}", descricao: "Faça login e aproveite descontos secretos e exclusivos na {LOJA}." },
+  { titulo: "15% OFF em livros e papelaria da {LOJA}", descricao: "Desconto especial em papelaria e leitura na {LOJA}. Válido até o fim do mês!" },
+  { titulo: "25% OFF em cosméticos naturais na {LOJA}", descricao: "Cuide de você com 25% OFF em produtos naturais e veganos na {LOJA}." },
+  { titulo: "30% OFF em roupas de inverno da {LOJA}", descricao: "Prepare-se para o frio com descontos de 30% em roupas da {LOJA}." },
+  { titulo: "Ganhe frete grátis para todo o Brasil na {LOJA}", descricao: "Sem taxa de entrega! A {LOJA} garante frete grátis para todo o país." },
+  { titulo: "10% OFF para pagamentos via PIX na {LOJA}", descricao: "Pagou com PIX? Ganhe 10% OFF automaticamente na {LOJA}." },
+  { titulo: "R$30 OFF em pedidos acima de R$200 na {LOJA}", descricao: "Use o cupom e economize R$30 em pedidos a partir de R$200 na {LOJA}." },
+  { titulo: "20% OFF em produtos esportivos na {LOJA}", descricao: "Descontos especiais em tênis, roupas e acessórios esportivos na {LOJA}." },
+  { titulo: "Desconto de aniversário da {LOJA}", descricao: "A {LOJA} está em festa! Celebre com descontos exclusivos de até 50%." },
+  { titulo: "Ganhe 2 por 1 em produtos selecionados da {LOJA}", descricao: "Leve 2 e pague 1 em produtos selecionados da {LOJA}. Imperdível!" },
+  { titulo: "40% OFF em eletrodomésticos na {LOJA}", descricao: "Ofertas quentes em produtos de casa e cozinha. 40% OFF na {LOJA}!" },
+  { titulo: "R$15 OFF em qualquer compra acima de R$100 na {LOJA}", descricao: "Cupom válido para qualquer categoria na {LOJA}." },
+  { titulo: "10% OFF + brinde exclusivo na {LOJA}", descricao: "Ganhe desconto e um mimo especial em compras na {LOJA}!" },
+  { titulo: "25% OFF em itens para pets na {LOJA}", descricao: "Seu pet também merece! 25% de desconto na {LOJA}." },
+  { titulo: "30% OFF em serviços financeiros da {LOJA}", descricao: "Economize em planos e serviços com 30% OFF na {LOJA}." },
+  { titulo: "Cupom especial de Natal da {LOJA}", descricao: "Entre no clima natalino com descontos incríveis na {LOJA}." },
+  { titulo: "50% OFF no outlet da {LOJA}", descricao: "Descontos de até 50% em produtos fora de linha na {LOJA}." },
+  { titulo: "R$25 OFF em pedidos acima de R$120 na {LOJA}", descricao: "Economize ainda mais com este cupom exclusivo da {LOJA}." },
+  { titulo: "Desconto especial para compras no app da {LOJA}", descricao: "Baixe o app e ganhe 15% OFF na sua primeira compra na {LOJA}." },
+  { titulo: "10% OFF em itens infantis na {LOJA}", descricao: "Descontos para os pequenos! 10% OFF em produtos infantis na {LOJA}." },
+  { titulo: "20% OFF em livros didáticos na {LOJA}", descricao: "Economize nos estudos com 20% OFF em materiais escolares na {LOJA}." },
+  { titulo: "Frete grátis em compras acima de R$80 na {LOJA}", descricao: "Aproveite frete grátis e descontos exclusivos na {LOJA}." },
+  { titulo: "15% OFF em produtos premium da {LOJA}", descricao: "Desconto exclusivo de 15% em produtos selecionados premium na {LOJA}." },
+  { titulo: "Descontos secretos da {LOJA}", descricao: "Ative o cupom misterioso e descubra o desconto surpresa na {LOJA}!" },
+  { titulo: "35% OFF em perfumes e fragrâncias da {LOJA}", descricao: "Perfumes importados com até 35% de desconto na {LOJA}." },
+  { titulo: "Ganhe R$40 OFF em compras acima de R$250 na {LOJA}", descricao: "Desconto automático aplicado no carrinho da {LOJA}." },
+  { titulo: "Cupom relâmpago de 1h na {LOJA}", descricao: "Corra! Cupom válido por apenas 1 hora com 20% OFF na {LOJA}." },
+  { titulo: "25% OFF em produtos sustentáveis da {LOJA}", descricao: "Compre consciente e economize com 25% OFF em produtos eco na {LOJA}." },
+  { titulo: "10% OFF em produtos para pets da {LOJA}", descricao: "Mimos e descontos para o seu bichinho na {LOJA}." },
+  { titulo: "R$60 OFF em compras acima de R$300 na {LOJA}", descricao: "Desconto válido em qualquer categoria dentro da {LOJA}." },
+  { titulo: "Desconto de 15% em brinquedos na {LOJA}", descricao: "Garanta a diversão da criançada com 15% OFF em brinquedos na {LOJA}." },
+  { titulo: "40% OFF em móveis planejados na {LOJA}", descricao: "Transforme sua casa com descontos de até 40% na {LOJA}." },
+  { titulo: "Cupom especial Black Friday da {LOJA}", descricao: "Prepare-se para os maiores descontos do ano na {LOJA}!" },
+  { titulo: "20% OFF + cashback de 5% na {LOJA}", descricao: "Desconto duplo: economize e receba cashback na {LOJA}!" },
+]
+
+// 🎟️ Geração de código e validade de cupom
+function gerarCodigoCupom() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  return Array.from({ length: 10 }, () => caracteres[Math.floor(Math.random() * caracteres.length)]).join('')
+}
+
+function gerarValidadeCupom() {
+  const dataBase = new Date('2025-12-10')
+  const diasExtras = Math.floor(Math.random() * 90) // até 3 meses depois
+  dataBase.setDate(dataBase.getDate() + diasExtras)
+  return dataBase
+}
+
+// 🚀 Função para gerar cupom
+function gerarCupom(loja) {
+  const modelo = modelosDeCupons[Math.floor(Math.random() * modelosDeCupons.length)]
+  return {
+    TITULO: modelo.titulo.replace('{LOJA}', loja.NOME_FANTASIA),
+    DESCRICAO: modelo.descricao.replace('{LOJA}', loja.NOME_FANTASIA),
+    CODIGO: gerarCodigoCupom(),
+    VALIDADE: gerarValidadeCupom(),
+    ID_LOJA: loja.ID_LOJA,
+  }
+}
+
 async function main() {
   console.log('🚀 Iniciando seed do banco de dados...')
 
@@ -431,6 +511,21 @@ const lojas = [
       console.log(`✅ Criados 3 descontos para a loja: ${loja.NOME_FANTASIA}`)
     } else {
       console.log(`⏩ Loja ${loja.NOME_FANTASIA} já possui descontos, pulando...`)
+    }
+  }
+
+   // 3️⃣ Criar cupons para cada loja
+  for (const loja of todasLojas) {
+    const cuponsExistentes = await prisma.cUPONS.count({
+      where: { ID_LOJA: loja.ID_LOJA },
+    })
+
+    if (cuponsExistentes === 0) {
+      const cupons = Array.from({ length: 3 }, () => gerarCupom(loja))
+      await prisma.cUPONS.createMany({ data: cupons })
+      console.log(`🎟️ Criados 3 cupons para a loja: ${loja.NOME_FANTASIA}`)
+    } else {
+      console.log(`⏩ Loja ${loja.NOME_FANTASIA} já possui cupons, pulando...`)
     }
   }
 
