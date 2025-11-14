@@ -7,3 +7,9 @@ export const listarTodos = async (filtros = {}) => {
         orderBy: {NOME_FANTASIA: 'asc'}
     });
 };
+
+export const buscarPorId = async (id) => {
+    return await prisma.lOJA.findUnique({
+        where: { ID_LOJA: id }
+    });
+};
