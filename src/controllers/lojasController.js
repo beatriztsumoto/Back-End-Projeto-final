@@ -17,24 +17,57 @@ const categoriasPermitidas = [
 
 export const listarTodos = async (req, res) => {
     try {
+        const {nome, endereco, categoria} = req.query
 
-        const lojas = await lojaModel.listarTodos();
+        const filtros = {};
+
+        if (nome) {
+            filtros.OR = [
+                {NOME_SOCIAL: { contains: nome, mode: "insensitive"}},
+                {NOME_FANTASIA: { contains: nome, mode: "insensitive"}}
+            ]
+        }
+
+        if (endereco) {
+            filtros.ENDERECO = {contains: endereco, mode: "insensitive"}
+        }
+
+        if (categoria) {
+
+            const permitido = categoriasPermitidas
+            .map(c => c.toLowerCase())
+            .includes(categoria.toLowerCase());
+
+            if (!permitido){
+                return res.status(400).json({
+                    erro: "Categoria inválida",
+                    categoriasPermitidas
+                });
+            }
+            
+            filtros.CATEGORIA = {
+                contains: categoria,
+                mode: "insensitive"
+        };
+        }
+
+        const lojas = await lojaModel.listarTodos(filtros);
 
         if(!lojas || lojas.length === 0) {
-            res.status(404).json({
+            return res.status(404).json({
                 total:lojas.length,
                 mensagem:"Não há lojas na lista"
             })
     }
 
-        res.status(200).json({
+        return res.status(200).json({
             total: lojas.length,
             mensagem:"Lista de lojas disponíveis",
             lojas
         })
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             erro:`Erro interno de servidor`,
             detalhes:error.message,
             status:500
