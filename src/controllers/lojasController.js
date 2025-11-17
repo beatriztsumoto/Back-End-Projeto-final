@@ -80,3 +80,35 @@ export const listarTodos = async (req, res) => {
         });
     }
 };
+
+export const buscarPorId  = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+
+        if (isNaN(id)) {
+            return res.status(400).json({
+                erro: "ID inválido"
+            });
+        }
+
+        const loja = await lojaModel.buscarPorId(id)
+
+        if (!loja) {
+            return res.status(404).json({
+                sucesso: false,
+                mensagem: "Loja não encontrada"
+            });
+        }
+
+        return res.status(200).json({
+            sucesso: true,
+            loja
+        })
+
+    } catch(error) {
+        return res.status(500).json({
+            erro: "Erro interno de servidor",
+            detalhes: error.message
+    })
+    }
+}
