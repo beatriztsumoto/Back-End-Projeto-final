@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import lojasRoutes from "./src/routes/lojasRoutes.js"
 
 const app = express();
 app.use(express.json());
@@ -11,6 +12,7 @@ app.get("/", (req, res) => {
     res.send("🚀 Servidor funcionando...");
 });
 
+app.use("/lojas", lojasRoutes);
 
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
