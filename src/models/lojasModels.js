@@ -13,3 +13,15 @@ export const buscarPorId = async (id) => {
         where: { ID_LOJA: id }
     })
 }
+
+export const buscarPorCnpj = (cnpj) => {
+    return prisma.lOJA.findFirst({
+        where: {CNPJ: cnpj}
+    });
+};
+
+export const criar = (dado) => {
+    return prisma.lOJA.create({
+        dado
+    })
+}
