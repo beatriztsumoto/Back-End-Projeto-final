@@ -46,8 +46,12 @@ export const listarTodos = async (req, res) => {
 
             if (!permitido) {
                 return res.status(400).json({
+                    status: 404,
                     erro: "Categoria inválida",
-                    categoriasPermitidas
+                    sugestao: [
+                        "procure por uma das categorias permitidas"
+                    ],
+                    categoriasPermitidas,
                 });
             }
 
@@ -62,11 +66,17 @@ export const listarTodos = async (req, res) => {
         if (!lojas || lojas.length === 0) {
             return res.status(404).json({
                 total: 0,
-                mensagem: "Não há lojas na lista"
+                mensagem: "Não há lojas na lista",
+                sugestao: [
+                    "Verifique se a informação inserida está correta",
+                    "Verifique se há lojas registradas com a informação inserida"
+                ]
             });
         }
 
         return res.status(200).json({
+            status: 200,
+            success: true,
             total: lojas.length,
             mensagem: "Lista de lojas disponíveis",
             lojas
@@ -95,20 +105,29 @@ export const buscarPorId  = async (req, res) => {
 
         if (!loja) {
             return res.status(404).json({
+                status: 404,
                 sucesso: false,
-                mensagem: "Loja não encontrada"
+                mensagem: "Loja não encontrada",
+                erro: "LOJA_NOT_FOUND",
+                sugestao: [
+                    "Verifique se a loja está registrada"
+                ]
             });
         }
 
         return res.status(200).json({
+            status: 200,
             sucesso: true,
+            mensagem: "Loja encontrada com sucesso!",
             loja
         })
 
     } catch(error) {
         return res.status(500).json({
+            status: 500,
             erro: "Erro interno de servidor",
             detalhes: error.message
     })
     }
 }
+
