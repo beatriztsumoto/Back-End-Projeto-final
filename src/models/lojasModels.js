@@ -7,3 +7,21 @@ export const listarTodos = async (filtros) => {
         where: filtros
     });
 };
+
+export const buscarPorId = async (id) => {
+    return await prisma.lOJA.findUnique({
+        where: { ID_LOJA: id }
+    })
+}
+
+export const buscarPorCnpj = (cnpj) => {
+    return prisma.lOJA.findFirst({
+        where: {CNPJ: cnpj}
+    });
+};
+
+export const criar = (dado) => {
+    return prisma.lOJA.create({
+        dado
+    })
+}
