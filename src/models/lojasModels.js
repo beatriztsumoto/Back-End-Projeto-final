@@ -22,6 +22,6 @@ export const buscarPorCnpj = (cnpj) => {
 
 export const criar = (dado) => {
     return prisma.lOJA.create({
-        dado
+        data: dado
     })
 }

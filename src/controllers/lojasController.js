@@ -150,7 +150,7 @@ export const criar = async (req, res) => {
         }
 
         //Validade se cnpj já existe
-        const cnpjExiste = await lojaModel.buscarPorCnpj(dados.CNPJ);
+        const cnpjExiste = await lojaModel.buscarPorCnpj(dado.CNPJ);
 
         if (cnpjExiste) {
             return res.status(409).json({
