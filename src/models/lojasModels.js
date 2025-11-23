@@ -22,6 +22,12 @@ export const buscarPorCnpj = (cnpj) => {
 
 export const criar = (dado) => {
     return prisma.lOJA.create({
-        dado
+        data: dado
     })
+}
+
+export const deletar = async (id) => {
+    return await prisma.lOJA.delete({
+        where: { ID_LOJA: id }
+    });
 }
