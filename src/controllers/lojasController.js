@@ -189,8 +189,49 @@ export const criar = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             status: 500,
-            erro: "Erro interno de servidor",
-            detalhes: error.message
+            error: "Erro interno de servidor",
+            details: error.message
         })
     }
 }
+
+export const deletar = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+
+        if(!id) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "ID inválido"
+            });
+        }
+
+       const loja = await lojaModel.buscarPorId(id);
+       if (!loja) {
+        return res.status(404).json({
+            status: 404,
+            success: false,
+            message: "Loja não encontrada",
+            error: "LOJA_NOT_FOUND",
+            suggestion: [
+                    "Verifique se a loja está registrada"
+                ]
+        })
+       }
+
+       await lojaModel.deletar(id);
+
+       return res.status(200).json({
+            status: 200, 
+            success: true,
+            message: "Loja deletada com sucesso"
+       });
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        });
+    }
+};

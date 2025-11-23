@@ -5,6 +5,7 @@ const router = Router();
 
 router.get("/", lojasController.listarTodos);
 router.get("/:id", lojasController.buscarPorId);
-router.post("/", lojasController.criar)
+router.post("/", lojasController.criar);
+router.delete("/:id", lojasController.deletar)
 
 export default router;
