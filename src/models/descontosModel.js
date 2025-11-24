@@ -7,3 +7,9 @@ export const listarTodos = async (filtros) => {
         include: { LOJA: true}
     });
 };
+
+export const buscarPorId = async (id) => {
+    return await prisma.dESCONTOS.findUnique({
+        where: { ID_DESCONTO: id }
+    })
+}

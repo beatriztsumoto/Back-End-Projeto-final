@@ -94,3 +94,43 @@ export const listarTodos = async (req, res) => {
         })
     }
 }
+
+export const buscarPorId = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+
+        if (isNaN(id)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "ID válido"
+            });
+        }
+
+        const desconto = await descontosModel.buscarPorId(id);
+
+        if (!desconto) {
+            return res.status(404).json({
+                status: 404,
+                seccess: false,
+                message: "Descnto não encontrado",
+                error: "DESCONTO_NOT_FOUND",
+                suggestion: "Verifique se o desconto está registrado"
+            });
+        }
+
+        return res.status(200).json({
+            status: 200,
+            seccess: true,
+            message: "Desconto encontrado com sucesso!",
+            desconto
+        });
+
+    } catch(error) {
+        return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        })
+    }
+}
