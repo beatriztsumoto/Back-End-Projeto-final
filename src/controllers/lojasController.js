@@ -84,9 +84,9 @@ export const listarTodos = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
+            status: 500,
             error: "Erro interno de servidor",
-            details: error.message,
-            status: 500
+            details: error.message
         });
     }
 };
@@ -97,7 +97,9 @@ export const buscarPorId  = async (req, res) => {
 
         if (isNaN(id)) {
             return res.status(400).json({
-                error: "ID inválido"
+                status: 400,
+                success: false,
+                message: "ID inválido"
             });
         }
 
@@ -169,7 +171,7 @@ export const criar = async (req, res) => {
                 status: 400,
                 success: false,
                 message: "Categoria inválida",
-                sugestao: [
+                suggestion: [
                     "Verifique se a categoria está escrita corretamente",
                     "Escolha uma das categorias válidas"
                 ],
@@ -177,6 +179,34 @@ export const criar = async (req, res) => {
             })
         }
 
+        //Valida Telefone
+        const telefoneCorreto = dado.TELEFONE_COMERCIAL;
+
+        if (telefoneCorreto.length !== 11) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O telefone deve conter exatamente 11 dígitos",
+                error: "INVALID_PHONE",
+                suggestion: [
+                    "Verifique se o telefone está nesse formato: 19876781098"
+                ],
+            })
+        }
+
+        if (isNaN(telefoneCorreto)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O telefone deve conter apenas numeros",
+                error: "INVALID_PHONE",
+                suggestion: [
+                    "Verifique se o telefone está nesse formato: 19876781098"
+                ],
+            })
+        }
+
+        //Cria
         const novaLoja = await lojaModel.criar(dado);
 
         return res.status(201).json({
@@ -197,9 +227,9 @@ export const criar = async (req, res) => {
 
 export const deletar = async (req, res) => {
     try {
-        const id = Number(req.params.id);
+        const id = parseInt(req.params.id);
 
-        if(!id) {
+        if(isNaN(id)) {
             return res.status(400).json({
                 status: 400,
                 success: false,
@@ -207,8 +237,8 @@ export const deletar = async (req, res) => {
             });
         }
 
-       const loja = await lojaModel.buscarPorId(id);
-       if (!loja) {
+       const lojaExiste = await lojaModel.buscarPorId(id);
+       if (!lojaExiste) {
         return res.status(404).json({
             status: 404,
             success: false,
@@ -227,6 +257,86 @@ export const deletar = async (req, res) => {
             success: true,
             message: "Loja deletada com sucesso"
        });
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        });
+    }
+};
+
+export const atualizar = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+
+        if (isNaN(id)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "ID inválido"
+            });
+        }
+
+        const lojaExiste = await lojaModel.buscarPorId(id);
+        if (!lojaExiste) {
+            return res.status(404).json({
+            status: 404,
+            success: false,
+            message: "Loja não encontrada",
+            error: "LOJA_NOT_FOUND",
+            suggestion: [
+                    "Verifique se a loja está registrada"
+                ]
+        });
+       }
+
+       const dado = req.body;
+
+       //Validade se cnpj já existe
+       if (dado.CNPJ && dado.CNPJ !== lojaExiste.CNPJ) {
+            const cnpjExiste = await lojaModel.buscarPorCnpj(dado.CNPJ);
+
+            if (cnpjExiste) {
+                return res.status(409).json({
+                    status: 409,
+                    success: false,
+                    message: "Não é possível atualizar uma loja com CNPJ já existente",
+                    error: "DUPLICATE_LOJA"
+                });
+            }
+       }
+
+       //Valida se a categoria é válida
+       if (dado.CATEGORIA) {
+        const categoriaValida = categoriasPermitidas.map(c => c.toLowerCase()).includes(dado.CATEGORIA.toLowerCase());
+
+        if (!categoriaValida) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "Categoria inválida",
+                suggestion: [
+                    "Verifique se a categoria está escrita corretamente",
+                    "Escolha uma das categorias válidas"
+                ],
+                categoriasPermitidas
+            })
+        }
+       }
+
+       //Valida Telefone 
+
+       //Atualiza
+       const lojaAtualizada = await lojaModel.atualizar(id, dado);
+
+       return res.status(200).json({
+            status: 200,
+            success: true,
+            message: "Loja atualizada com sucesso!",
+            loja: lojaAtualizada
+       });
+
     } catch (error) {
         return res.status(500).json({
             status: 500,
