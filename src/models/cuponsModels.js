@@ -8,3 +8,9 @@ export const listarTodos = async (filtros) => {
         include: { LOJA: true}
     });
 };
+
+export const buscarPorId = async (id) => {
+    return await prisma.cUPONS.findUnique({
+        where: { ID_CUPOM: id },
+    })
+}
