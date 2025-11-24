@@ -65,6 +65,7 @@ export const listarTodos = async (req, res) => {
 
         if (!lojas || lojas.length === 0) {
             return res.status(404).json({
+                status: 404,
                 total: 0,
                 message: "Não há lojas na lista",
                 suggestion: [
