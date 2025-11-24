@@ -12,5 +12,11 @@ export const listarTodos = async (filtros) => {
 export const buscarPorId = async (id) => {
     return await prisma.cUPONS.findUnique({
         where: { ID_CUPOM: id },
-    })
+    });
+}
+
+export const deletarPorId = async (id) => {
+    return await prisma.cUPONS.delete({
+        where: { ID_CUPOM: id },
+    });
 }
