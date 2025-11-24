@@ -6,5 +6,6 @@ const router = Router();
 router.get("/", cuponsController.listarTodos);
 router.get("/:id", cuponsController.buscarPorId);
 router.delete("/:id", cuponsController.deletarPorId);
+router.post("/", cuponsController.criarCupom);
 
 export default router;
