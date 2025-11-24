@@ -20,3 +20,15 @@ export const deletarPorId = async (id) => {
         where: { ID_CUPOM: id },
     });
 }
+
+export const buscarPorCodigo = (codigo) => {
+    return prisma.cUPONS.findFirst({
+        where: {CODIGO: codigo}
+    });
+};
+
+export const criarCupom = (dado) => {
+    return prisma.cUPONS.create({
+        data: dado
+    })
+}

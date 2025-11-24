@@ -160,3 +160,58 @@ export const deletarPorId = async (req, res) => {
     });
   }
 };
+
+export const criarCupom = async (req, res) => {
+  try {
+    const dado = req.body;
+  
+    const camposObrigatorios = [
+      "TITULO",
+      "DESCRICAO",
+      "CODIGO",
+      "VALIDADE",
+      "ID_LOJA"
+    ];
+    const faltandoCampo = camposObrigatorios.filter(campo => !dado[campo]);
+  
+    // Tratamento de erro para validação de campos obrigatórios
+    if (faltandoCampo.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "Criação mal executada, verifique os campos",
+        error: "VALIDATION_ERROR",
+        details: "Os campos " + faltandoCampo + " é obrigatório"
+      })
+    }
+
+    const codigoExiste = await cuponsModel.buscarPorCodigo(dado.CODIGOinicia );
+
+    if (codigoExiste) {
+      return res.status(409).json({
+        status: 409,
+        success: false,
+        error: "DUPLICATE_LOJA",
+        message: "Não é possível registrar mais de um cupom com o mesmo código",
+        suggestion: "Insira um código diferente"
+      })
+    }
+
+    // Cria o novo cupom
+    const novoCupom = await cuponsModel.criarCupom(dado);
+
+    return res.status(200).json({
+      status: 201,
+      success: true,
+      message: "Cupom criado com sucesso!",
+      cupom: novoCupom
+    })
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      success: false,
+      error: "Erro interno do servidor",
+      details: error.message,
+    })
+  }
+}
