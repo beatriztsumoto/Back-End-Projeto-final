@@ -326,6 +326,35 @@ export const atualizar = async (req, res) => {
        }
 
        //Valida Telefone 
+       if (dado.TELEFONE_COMERCIAL) {
+
+        const telefoneCorreto = dado.TELEFONE_COMERCIAL;
+
+        if (telefoneCorreto.length !== 11) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O telefone deve conter exatamente 11 dígitos",
+                error: "INVALID_PHONE",
+                suggestion: [
+                    "Verifique se o telefone está nesse formato: 19876781098"
+                ],
+            })
+        }
+
+        if (isNaN(telefoneCorreto)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O telefone deve conter apenas numeros",
+                error: "INVALID_PHONE",
+                suggestion: [
+                    "Verifique se o telefone está nesse formato: 19876781098"
+                ],
+            })
+        }
+        
+       }
 
        //Atualiza
        const lojaAtualizada = await lojaModel.atualizar(id, dado);
