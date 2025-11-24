@@ -2,7 +2,7 @@ import * as cuponsModel from "../models/cuponsModels.js";
 
 export const listarTodos = async (req, res) => {
   try {
-    const { nome_loja, codigo } = req.query;
+    const { nome_loja, endereco_loja, codigo } = req.query;
 
     const filtros = {};
 
@@ -13,6 +13,12 @@ export const listarTodos = async (req, res) => {
           { NOME_SOCIAL: { contains: nome_loja, mode: "insensitive" } },
           { NOME_FANTASIA: { contains: nome_loja, mode: "insensitive" } },
         ],
+      };
+    }
+
+    if (endereco_loja) {
+      filtros.LOJA = {
+        ENDERECO: { contains: endereco_loja, mode: "insensitive" },
       };
     }
 
@@ -46,6 +52,16 @@ export const listarTodos = async (req, res) => {
           total: 0,
           message: "Nenhum cupom da loja " + nome_loja + " foi encontrado",
         });
+      }
+
+      if (endereco_loja) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          total: 0,
+          message:
+            "Nenhum cupom de loja com endereço " + endereco_loja + " foi encontrado",
+        })
       }
     }
 
