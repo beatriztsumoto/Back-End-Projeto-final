@@ -1,4 +1,5 @@
 import * as descontosModel from "../models/descontosModel.js";
+import * as lojaModel from "../models/lojasModels.js"
 
 const categoriasPermitidas = [
     'Moda e Acessórios',
@@ -167,6 +168,19 @@ export const criar = async (req, res) => {
                     "Escolha uma das categorias válidas"
                 ],
                 categoriasPermitidas
+            })
+        }
+
+        //Verifica se loja existe
+        const lojaExiste = await lojaModel.buscarPorId(parseInt(dado.ID_LOJA));
+
+        if (!lojaExiste) {
+            return res.status(404).json({
+                status: 404,
+                success: false,
+                error: "LOJA_NOT_FOUND",
+                message:  "Não é possível criar desconto para uma loja inexistente",
+                suggestion: "Verifique se o ID_LOJA inserido pertence a uma loja cadastrada"
             })
         }
 
