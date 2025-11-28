@@ -7,5 +7,6 @@ router.get("/", descontosController.listarTodos);
 router.get("/:id", descontosController.buscarPorId);
 router.post("/", descontosController.criar);
 router.delete("/:id", descontosController.deletar);
+router.put("/:id", descontosController.atualizar);
 
 export default router;

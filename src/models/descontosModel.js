@@ -31,3 +31,10 @@ export const deletar = async (id) => {
         where: { ID_DESCONTO: id }
     });
 }
+
+export const atualizar = async (id, dado) => {
+    return await prisma.dESCONTOS.update({
+        where: { ID_DESCONTO: id },
+        data: dado
+    })
+}

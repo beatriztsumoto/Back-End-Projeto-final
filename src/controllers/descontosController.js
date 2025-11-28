@@ -299,3 +299,62 @@ export const deletar = async (req, res) => {
         });
     }
 };
+
+export const atualizar = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const dado = req.body;
+
+        if (isNaN(id)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
+            }); 
+        }
+
+        const descontoExiste = await lojaModel.buscarPorId(id);
+        if (!descontoExiste) {
+            return res.status(404).json({
+                status: 404,
+            success: false,
+            message: "Desconto não encontrado",
+            error: "DESCONTO_NOT_FOUND",
+            suggestion: "Verifique se o desconto está registrado"
+                
+            })
+        }
+
+        //Impede alterar o ID_LOJA
+        if (dado.ID_LOJA && dado.ID_LOJA !== descontoExiste.ID_LOJA) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                error: "CANNOT_CHANGE_STORE",
+                message: "Não é possível alterar a loja proprietária do desconto",
+                suggestion: "Use apenas o mesmo ID_LOJA do desconto original"
+            });
+        }
+
+        //Atualiza 
+        const descontoAtualizado = await descontosModel.atualizar(id, dado);
+
+        return res.status(200).json({
+            status: 200,
+            success: true,
+            message: "Desconto atualizado com sucesso!",
+            desconto: {
+                ...descontoAtualizado,
+                VALOR_DESCONTO: Number(descontoAtualizado.VALOR_DESCONTO).toFixed(2)
+        }
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        });
+    }
+};
