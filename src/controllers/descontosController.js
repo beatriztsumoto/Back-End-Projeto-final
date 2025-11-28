@@ -1,4 +1,5 @@
 import * as descontosModel from "../models/descontosModel.js";
+import * as lojaModel from "../models/lojasModels.js"
 
 const categoriasPermitidas = [
     'Moda e Acessórios',
@@ -103,7 +104,8 @@ export const buscarPorId = async (req, res) => {
             return res.status(400).json({
                 status: 400,
                 success: false,
-                message: "ID válido"
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
             });
         }
 
@@ -113,7 +115,7 @@ export const buscarPorId = async (req, res) => {
             return res.status(404).json({
                 status: 404,
                 seccess: false,
-                message: "Descnto não encontrado",
+                message: "Desconto não encontrado",
                 error: "DESCONTO_NOT_FOUND",
                 suggestion: "Verifique se o desconto está registrado"
             });
@@ -135,6 +137,89 @@ export const buscarPorId = async (req, res) => {
     }
 }
 
+export const criar = async (req, res) => {
+    try {
+        const dado = req.body;
+
+        const camposObrigatorios = ["TITULO", "FOTO_ITEM", "VALOR_DESCONTO", "DESCRICAO", "CATEGORIA", "ID_LOJA"];
+        const faltandoCampo = camposObrigatorios.filter(campo => !dado[campo]);
+
+        //Campos obrigatórios
+        if (faltandoCampo.length > 0) {
+            return res.status(400).json({
+            status: 400,
+            success: false,
+            message: "Criação mal executada, verifique os campos",
+            error: "VALIDATION_ERROR",
+            details: `O campo ${faltandoCampo} é obrigatório`
+            });
+        }
+
+        //Valida se a categoria é válida
+        const categoriaValida = categoriasPermitidas.map(c => c.toLowerCase()).includes(dado.CATEGORIA.toLowerCase());
+
+        if (!categoriaValida) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "Categoria inválida",
+                suggestion: [
+                    "Verifique se a categoria está escrita corretamente",
+                    "Escolha uma das categorias válidas"
+                ],
+                categoriasPermitidas
+            })
+        }
+
+        //Verifica se loja existe
+        const lojaExiste = await lojaModel.buscarPorId(parseInt(dado.ID_LOJA));
+
+        if (!lojaExiste) {
+            return res.status(404).json({
+                status: 404,
+                success: false,
+                error: "LOJA_NOT_FOUND",
+                message:  "Não é possível criar desconto para uma loja inexistente",
+                suggestion: "Verifique se o ID_LOJA inserido pertence a uma loja cadastrada"
+            })
+        }
+
+        //Verifica se o título do desconto já existe
+        const tituloExiste = await descontosModel.buscarPorTitulo(dado.TITULO);
+
+        if (tituloExiste) {
+            return res.status(409).json({
+                status: 409,
+                success: false,
+                message: "Não é possível criar um desconto com um título já existente",
+                error: "DUPLICATE_TITLE",
+                suggestion: [
+                    "Tente usar um título diferente",
+                    "Verifique os descontos já cadastrados"
+                ]
+            })
+        }
+
+        //Cria
+        const novoDesconto = await descontosModel.criar(dado);
+
+        return res.status(201).json({
+            status: 201,
+            success: true,
+            message: "Nova desconto criado com sucesso",
+            desconto: novoDesconto
+        })
+
+        } catch (error) {
+            return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        })
+        }
+    }
+
+
 export const deletar = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
@@ -143,7 +228,8 @@ export const deletar = async (req, res) => {
             return res.status(400).json({
                 status: 400,
                 success: false,
-                message: "ID inválido"
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
             });
         }
 

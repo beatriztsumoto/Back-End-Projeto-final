@@ -14,6 +14,18 @@ export const buscarPorId = async (id) => {
     })
 }
 
+export const buscarPorTitulo = async (titulo) => {
+    return await prisma.dESCONTOS.findFirst({
+        where: { TITULO: titulo }
+    })
+}
+
+export const criar = (dado) => {
+    return prisma.dESCONTOS.create({
+        data: dado
+    })
+}
+
 export const deletar = async (id) => {
     return await prisma.dESCONTOS.delete({
         where: { ID_DESCONTO: id }
