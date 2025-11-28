@@ -154,6 +154,22 @@ export const criar = async (req, res) => {
             });
         }
 
+        //Valida se a categoria é válida
+        const categoriaValida = categoriasPermitidas.map(c => c.toLowerCase()).includes(dado.CATEGORIA.toLowerCase());
+
+        if (!categoriaValida) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "Categoria inválida",
+                suggestion: [
+                    "Verifique se a categoria está escrita corretamente",
+                    "Escolha uma das categorias válidas"
+                ],
+                categoriasPermitidas
+            })
+        }
+
         //Cria
         const novoDesconto = await descontosModel.criar(dado);
 
