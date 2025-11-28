@@ -78,12 +78,18 @@ export const listarTodos = async (req, res) => {
             });
         }
 
+        //Mostra o VALOR_DESCONTO com só 2 casas decimais
+        const descontosFormatados = descontos.map(d => ({
+            ...d,
+            VALOR_DESCONTO: Number(d.VALOR_DESCONTO).toFixed(2)
+        }));
+
         return res.status(200).json({
             status: 200,
             success: true,
             total: descontos.length,
             message: "Descontos encontrados com sucesso!",
-            data: descontos
+            data: descontosFormatados
         });
 
     } catch (error) {
@@ -121,11 +127,17 @@ export const buscarPorId = async (req, res) => {
             });
         }
 
+        //Mostra o VALOR_DESCONTO com só 2 casas decimais
+        const descontosFormatados = {
+            ...desconto,
+            VALOR_DESCONTO: Number(desconto.VALOR_DESCONTO).toFixed(2)
+        };
+
         return res.status(200).json({
             status: 200,
             seccess: true,
             message: "Desconto encontrado com sucesso!",
-            desconto
+            desconto: descontosFormatados
         });
 
     } catch(error) {
@@ -200,6 +212,29 @@ export const criar = async (req, res) => {
             })
         }
 
+        //Verifica o formato de VALOR_DESCONTO
+
+        const valor = dado.VALOR_DESCONTO
+
+        //Tem que ser numero
+        if (isNaN(valor)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O VALOR_DESCONTO deve ser um número válido",
+                suggestion: "Siga esse formato para VALOR_DESCONTO: 100.00"
+            })
+        }
+
+        //Tem que ser positivo
+        if (parseFloat(valor) <= 0) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O VALOR_DESCONTO deve ser maior que zero"
+            })
+        }
+
         //Cria
         const novoDesconto = await descontosModel.criar(dado);
 
@@ -207,7 +242,10 @@ export const criar = async (req, res) => {
             status: 201,
             success: true,
             message: "Nova desconto criado com sucesso",
-            desconto: novoDesconto
+            desconto: {
+                ...novoDesconto,
+                VALOR_DESCONTO: Number(novoDesconto.VALOR_DESCONTO).toFixed(2)
+            }
         })
 
         } catch (error) {
