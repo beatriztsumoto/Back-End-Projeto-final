@@ -337,6 +337,42 @@ export const atualizar = async (req, res) => {
             });
         }
 
+        //Valida se a categoria é válida
+        if (dado.CATEGORIA) {
+        const categoriaValida = categoriasPermitidas.map(c => c.toLowerCase()).includes(dado.CATEGORIA.toLowerCase());
+
+        if (!categoriaValida) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "Categoria inválida",
+                suggestion: [
+                    "Verifique se a categoria está escrita corretamente",
+                    "Escolha uma das categorias válidas"
+                ],
+                categoriasPermitidas
+            })
+        }
+    }
+
+    //Verifica se o título do desconto já existe
+    if (dado.TITULO && dado.TITULO !== descontoExiste.TITULO) {
+        const tituloExiste = await descontosModel.buscarPorTitulo(dado.TITULO);
+
+        if (tituloExiste) {
+            return res.status(409).json({
+                status: 409,
+                success: false,
+                message: "Não é possível criar um desconto com um título já existente",
+                error: "DUPLICATE_TITLE",
+                suggestion: [
+                    "Tente usar um título diferente",
+                    "Verifique os descontos já cadastrados"
+                ]
+            })
+        }
+    }
+
         //Atualiza 
         const descontoAtualizado = await descontosModel.atualizar(id, dado);
 
