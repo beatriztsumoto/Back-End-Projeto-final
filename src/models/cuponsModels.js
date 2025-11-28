@@ -32,3 +32,10 @@ export const criarCupom = (dado) => {
         data: dado
     })
 }
+
+export const atualizarCupom = async (id, dado) => {
+    return await prisma.cUPONS.update({
+        where: { ID_CUPOM: id },
+        data: dado
+    })
+}
