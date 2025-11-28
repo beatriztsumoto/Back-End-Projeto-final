@@ -200,6 +200,29 @@ export const criar = async (req, res) => {
             })
         }
 
+        //Verifica o formato de VALOR_DESCONTO
+        const valor = dado.VALOR_DESCONTO
+        //Tem que ser numero
+        if (isNaN(valor)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O VALOR_DESCONTO deve ser um número válido",
+                suggestion: "Siga esse formato para VALOR_DESCONTO: 100.00"
+            })
+        }
+
+        //Tem que ser positivo
+        if (parseFloat(valor) <= 0) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O VALOR_DESCONTO deve ser maior que zero"
+            })
+        }
+
+        //Tem que ter 2 casas decimais no máximo
+
         //Cria
         const novoDesconto = await descontosModel.criar(dado);
 
