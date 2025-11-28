@@ -314,7 +314,7 @@ export const atualizar = async (req, res) => {
             }); 
         }
 
-        const descontoExiste = await lojaModel.buscarPorId(id);
+        const descontoExiste = await descontosModel.buscarPorId(id);
         if (!descontoExiste) {
             return res.status(404).json({
                 status: 404,
@@ -327,7 +327,7 @@ export const atualizar = async (req, res) => {
         }
 
         //Impede alterar o ID_LOJA
-        if (dado.ID_LOJA && dado.ID_LOJA !== descontoExiste.ID_LOJA) {
+        if (dado.ID_LOJA != undefined && dado.ID_LOJA !== descontoExiste.ID_LOJA) {
             return res.status(400).json({
                 status: 400,
                 success: false,
@@ -359,11 +359,11 @@ export const atualizar = async (req, res) => {
     if (dado.TITULO && dado.TITULO !== descontoExiste.TITULO) {
         const tituloExiste = await descontosModel.buscarPorTitulo(dado.TITULO);
 
-        if (tituloExiste) {
+        if (tituloExiste && tituloExiste.ID_DESCONTO !== id) {
             return res.status(409).json({
                 status: 409,
                 success: false,
-                message: "Não é possível criar um desconto com um título já existente",
+                message: "Não é possível atualizar um desconto com um título já existente",
                 error: "DUPLICATE_TITLE",
                 suggestion: [
                     "Tente usar um título diferente",
@@ -372,6 +372,30 @@ export const atualizar = async (req, res) => {
             })
         }
     }
+
+    //Verifica o formato de VALOR_DESCONTO
+if (dado.VALOR_DESCONTO != undefined) {
+    const valor = dado.VALOR_DESCONTO
+
+    //Tem que ser numero
+    if (isNaN(valor)) {
+        return res.status(400).json({
+            status: 400,
+            success: false,
+            message: "O VALOR_DESCONTO deve ser um número válido",
+            suggestion: "Siga esse formato para VALOR_DESCONTO: 100.00"
+        })
+    }
+
+    //Tem que ser positivo
+    if (parseFloat(valor) <= 0) {
+        return res.status(400).json({
+            status: 400,
+            success: false,
+            message: "O VALOR_DESCONTO deve ser maior que zero"
+        })
+    }
+}
 
         //Atualiza 
         const descontoAtualizado = await descontosModel.atualizar(id, dado);
