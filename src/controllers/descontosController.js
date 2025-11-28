@@ -184,6 +184,22 @@ export const criar = async (req, res) => {
             })
         }
 
+        //Verifica se o título do desconto já existe
+        const tituloExiste = await descontosModel.buscarPorTitulo(dado.TITULO);
+
+        if (tituloExiste) {
+            return res.status(409).json({
+                status: 409,
+                success: false,
+                message: "Não é possível criar um desconto com um título já existente",
+                error: "DUPLICATE_TITLE",
+                suggestion: [
+                    "Tente usar um título diferente",
+                    "Verifique os descontos já cadastrados"
+                ]
+            })
+        }
+
         //Cria
         const novoDesconto = await descontosModel.criar(dado);
 
