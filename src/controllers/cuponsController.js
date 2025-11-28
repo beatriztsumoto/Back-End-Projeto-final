@@ -60,8 +60,10 @@ export const listarTodos = async (req, res) => {
           success: false,
           total: 0,
           message:
-            "Nenhum cupom de loja com endereço " + endereco_loja + " foi encontrado",
-        })
+            "Nenhum cupom de loja com endereço " +
+            endereco_loja +
+            " foi encontrado",
+        });
       }
     }
 
@@ -88,8 +90,8 @@ export const buscarPorId = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).json({
         status: 400,
-        error: "O valor inserido não é um número válido",
-        suggestion: "Verifique o ID e tente novamente",
+        success: false,
+        message: "ID inválido",
       });
     }
 
@@ -127,8 +129,8 @@ export const deletarPorId = async (req, res) => {
     if (isNaN(id)) {
       return res.status(400).json({
         status: 400,
-        error: "O valor inserido não é um número válido",
-        suggestion: "Verifique o ID e tente novamente",
+        success: false,
+        message: "ID inválido",
       });
     }
 
@@ -172,6 +174,7 @@ export const criarCupom = async (req, res) => {
       "VALIDADE",
       "ID_LOJA",
     ];
+
     const faltandoCampo = camposObrigatorios.filter((campo) => !dado[campo]);
 
     if (faltandoCampo.length > 0) {
@@ -194,12 +197,13 @@ export const criarCupom = async (req, res) => {
         status: 400,
         success: false,
         error: "INVALID_DATE",
-        message: "O campo VALIDADE deve ser uma data válida no formato DateTime.",
+        message:
+          "O campo VALIDADE deve ser uma data válida no formato DateTime.",
         details: "A data de validade deve estar no formato YYYY-MM-DD ou ISO.",
       });
     }
 
-    dado.VALIDADE = validade;  
+    dado.VALIDADE = validade;
 
     // Verifica se a data está no passado
     const dataAtual = new Date();
@@ -229,17 +233,18 @@ export const criarCupom = async (req, res) => {
     }
 
     //Verifica se loja existe
-        const lojaExiste = await cuponsModel.buscarPorId(parseInt(dado.ID_LOJA));
+    const lojaExiste = await cuponsModel.buscarPorId(parseInt(dado.ID_LOJA));
 
-        if (!lojaExiste) {
-            return res.status(404).json({
-                status: 404,
-                success: false,
-                error: "LOJA_NOT_FOUND",
-                message:  "Não é possível criar desconto para uma loja inexistente",
-                suggestion: "Verifique se o ID_LOJA inserido pertence a uma loja cadastrada"
-            })
-        }
+    if (!lojaExiste) {
+      return res.status(404).json({
+        status: 404,
+        success: false,
+        error: "LOJA_NOT_FOUND",
+        message: "Não é possível atualizar um cupom de uma loja inexistente",
+        suggestion:
+          "Verifique se o ID_LOJA inserido pertence a uma loja cadastrada",
+      });
+    }
 
     const novoCupom = await cuponsModel.criarCupom(dado);
 
@@ -248,6 +253,137 @@ export const criarCupom = async (req, res) => {
       success: true,
       message: "Cupom criado com sucesso!",
       cupom: novoCupom,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      success: false,
+      error: "Erro interno do servidor",
+      details: error.message,
+    });
+  }
+};
+
+export const atualizarCupom = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const dado = req.body;
+
+    if (isNaN(id)) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "ID inválido",
+      });
+    }
+
+    const cupomExiste = await cuponsModel.buscarPorId(id);
+    if (!cupomExiste) {
+      return res.status(404).json({
+        status: 404,
+        success: false,
+        message: "Cupom não encontrado",
+        error: "CUPOM_NOT_FOUND",
+        suggestion: "Verifique se o cupom está registrado",
+      })
+    }
+
+    const camposObrigatorios = [
+      "TITULO",
+      "DESCRICAO",
+      "CODIGO",
+      "VALIDADE",
+      "ID_LOJA",
+    ];
+
+    const faltandoCampo = camposObrigatorios.filter((campo) => !dado[campo]);
+
+    if (faltandoCampo.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "Atualização não executada, verifique os campos",
+        error: "VALIDATION_ERROR",
+        details: "O campo " + faltandoCampo + " é obrigatório",
+      });
+    }
+
+    // Normaliza datas com "/"
+    const dataNormalizada = dado.VALIDADE.replace(/\//g, "-");
+
+    // Validação de data
+    const validade = new Date(dataNormalizada);
+    if (isNaN(validade.getTime())) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "INVALID_DATE",
+        message:
+          "O campo VALIDADE deve ser uma data válida no formato DateTime.",
+        details: "A data de validade deve estar no formato YYYY-MM-DD ou ISO.",
+      });
+    }
+
+    dado.VALIDADE = validade;
+
+    // Verifica se a data está no passado
+    const dataAtual = new Date();
+    dataAtual.setHours(0, 0, 0, 0);
+
+    if (validade < dataAtual) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "PAST_DATE",
+        message: "A data de validade não pode ser anterior à data atual.",
+        details: "Insira uma data futura.",
+        currentDate: dataAtual,
+      });
+    }
+
+    const codigoExiste = await cuponsModel.buscarPorCodigo(dado.CODIGO);
+
+    if (codigoExiste && codigoExiste.ID_CUPOM !== id) {
+      return res.status(409).json({
+        status: 409,
+        success: false,
+        error: "DUPLICATE_CODIGO",
+        message: "Não é possível registrar mais de um cupom com o mesmo código",
+        suggestion: "Insira um código diferente",
+      });
+    }
+
+    //Verifica se loja existe
+    const lojaExiste = await cuponsModel.buscarPorId(parseInt(dado.ID_LOJA));
+
+    if (dado.ID_LOJA !== cupomExiste.ID_LOJA) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "CANNOT_CHANGE_STORE",
+        message: "Não é permitido alterar a loja proprietária do cupom",
+        suggestion: "Mantenha o mesmo ID_LOJA do cupom original",
+      })
+    }
+
+    if (!lojaExiste) {
+      return res.status(404).json({
+        status: 404,
+        success: false,
+        error: "LOJA_NOT_FOUND",
+        message: "Não é possível atualizar um cupom de uma loja inexistente",
+        suggestion:
+          "Verifique se o ID_LOJA inserido pertence a uma loja cadastrada",
+      });
+    }
+
+    const cupomAtualizado = await cuponsModel.atualizarCupom(id, dado);
+
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      message: "Cupom atualizado com sucesso!",
+      cupom: cupomAtualizado,
     });
   } catch (error) {
     return res.status(500).json({
