@@ -136,6 +136,44 @@ export const buscarPorId = async (req, res) => {
     }
 }
 
+export const criar = async (req, res) => {
+    try {
+        const dado = req.body;
+
+        const camposObrigatorios = ["TITULO", "FOTO_ITEM", "VALOR_DESCONTO", "DESCRICAO", "CATEGORIA", "ID_LOJA"];
+        const faltandoCampo = camposObrigatorios.filter(campo => !dado[campo]);
+
+        //Campos obrigatórios
+        if (faltandoCampo.length > 0) {
+            return res.status(400).json({
+            status: 400,
+            success: false,
+            message: "Criação mal executada, verifique os campos",
+            error: "VALIDATION_ERROR",
+            details: `O campo ${faltandoCampo} é obrigatório`
+            });
+        }
+
+        //Cria
+        const novoDesconto = await descontosModel.criar(dado);
+
+        return res.status(201).json({
+            status: 201,
+            success: true,
+            message: "Nova desconto criado com sucesso",
+            desconto: novoDesconto
+        })
+
+        } catch (error) {
+            return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        })
+        }
+    }
+
+
 export const deletar = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
