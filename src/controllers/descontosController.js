@@ -103,7 +103,8 @@ export const buscarPorId = async (req, res) => {
             return res.status(400).json({
                 status: 400,
                 success: false,
-                message: "ID válido"
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
             });
         }
 
@@ -113,7 +114,7 @@ export const buscarPorId = async (req, res) => {
             return res.status(404).json({
                 status: 404,
                 seccess: false,
-                message: "Descnto não encontrado",
+                message: "Desconto não encontrado",
                 error: "DESCONTO_NOT_FOUND",
                 suggestion: "Verifique se o desconto está registrado"
             });
@@ -143,7 +144,8 @@ export const deletar = async (req, res) => {
             return res.status(400).json({
                 status: 400,
                 success: false,
-                message: "ID inválido"
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
             });
         }
 
