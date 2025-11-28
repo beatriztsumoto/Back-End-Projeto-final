@@ -14,7 +14,11 @@
     "type": "git",
     "url": "git+https://github.com/beatriztsumoto/Back-End-Projeto-final.git"
   },
-  "keywords": ["cupons e desconto", "backend", "database"],
+  "keywords": [
+    "cupons e desconto",
+    "backend",
+    "database"
+  ],
   "author": "Equipe DeVisions",
   "license": "MIT",
   "bugs": {
@@ -24,6 +28,7 @@
   "description": "API com banco de dados e backend para o site de cupons e descontos",
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
