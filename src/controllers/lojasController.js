@@ -275,8 +275,9 @@ export const atualizar = async (req, res) => {
             return res.status(400).json({
                 status: 400,
                 success: false,
-                message: "ID inválido"
-            });
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
+            }); 
         }
 
         const lojaExiste = await lojaModel.buscarPorId(id);
@@ -286,9 +287,8 @@ export const atualizar = async (req, res) => {
             success: false,
             message: "Loja não encontrada",
             error: "LOJA_NOT_FOUND",
-            suggestion: [
-                    "Verifique se a loja está registrada"
-                ]
+            suggestion: "Verifique se a loja está registrada"
+                
         });
        }
 

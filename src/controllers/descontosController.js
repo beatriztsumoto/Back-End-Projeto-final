@@ -299,3 +299,122 @@ export const deletar = async (req, res) => {
         });
     }
 };
+
+export const atualizar = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const dado = req.body;
+
+        if (isNaN(id)) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "O valor inserido não é um número válido",
+                suggestion: "Verifique o ID e tente novamente"
+            }); 
+        }
+
+        const descontoExiste = await descontosModel.buscarPorId(id);
+        if (!descontoExiste) {
+            return res.status(404).json({
+                status: 404,
+            success: false,
+            message: "Desconto não encontrado",
+            error: "DESCONTO_NOT_FOUND",
+            suggestion: "Verifique se o desconto está registrado"
+                
+            })
+        }
+
+        //Impede alterar o ID_LOJA
+        if (dado.ID_LOJA != undefined && dado.ID_LOJA !== descontoExiste.ID_LOJA) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                error: "CANNOT_CHANGE_STORE",
+                message: "Não é possível alterar a loja proprietária do desconto",
+                suggestion: "Use apenas o mesmo ID_LOJA do desconto original"
+            });
+        }
+
+        //Valida se a categoria é válida
+        if (dado.CATEGORIA) {
+        const categoriaValida = categoriasPermitidas.map(c => c.toLowerCase()).includes(dado.CATEGORIA.toLowerCase());
+
+        if (!categoriaValida) {
+            return res.status(400).json({
+                status: 400,
+                success: false,
+                message: "Categoria inválida",
+                suggestion: [
+                    "Verifique se a categoria está escrita corretamente",
+                    "Escolha uma das categorias válidas"
+                ],
+                categoriasPermitidas
+            })
+        }
+    }
+
+    //Verifica se o título do desconto já existe
+    if (dado.TITULO && dado.TITULO !== descontoExiste.TITULO) {
+        const tituloExiste = await descontosModel.buscarPorTitulo(dado.TITULO);
+
+        if (tituloExiste && tituloExiste.ID_DESCONTO !== id) {
+            return res.status(409).json({
+                status: 409,
+                success: false,
+                message: "Não é possível atualizar um desconto com um título já existente",
+                error: "DUPLICATE_TITLE",
+                suggestion: [
+                    "Tente usar um título diferente",
+                    "Verifique os descontos já cadastrados"
+                ]
+            })
+        }
+    }
+
+    //Verifica o formato de VALOR_DESCONTO
+if (dado.VALOR_DESCONTO != undefined) {
+    const valor = dado.VALOR_DESCONTO
+
+    //Tem que ser numero
+    if (isNaN(valor)) {
+        return res.status(400).json({
+            status: 400,
+            success: false,
+            message: "O VALOR_DESCONTO deve ser um número válido",
+            suggestion: "Siga esse formato para VALOR_DESCONTO: 100.00"
+        })
+    }
+
+    //Tem que ser positivo
+    if (parseFloat(valor) <= 0) {
+        return res.status(400).json({
+            status: 400,
+            success: false,
+            message: "O VALOR_DESCONTO deve ser maior que zero"
+        })
+    }
+}
+
+        //Atualiza 
+        const descontoAtualizado = await descontosModel.atualizar(id, dado);
+
+        return res.status(200).json({
+            status: 200,
+            success: true,
+            message: "Desconto atualizado com sucesso!",
+            desconto: {
+                ...descontoAtualizado,
+                VALOR_DESCONTO: Number(descontoAtualizado.VALOR_DESCONTO).toFixed(2)
+        }
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            status: 500,
+            error: "Erro interno de servidor",
+            details: error.message
+        });
+    }
+};
