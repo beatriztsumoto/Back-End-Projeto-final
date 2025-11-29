@@ -4,6 +4,7 @@ import cors from "cors";
 import lojasRoutes from "./src/routes/lojasRoutes.js";
 import cuponsRoutes from "./src/routes/cuponsRoutes.js";
 import descontosRoutes from "./src/routes/descontosRoutes.js";
+import categoriasRoutes from "./src/routes/categoriasRoutes.js";
 
 dotenv.config();
 const serverPort = process.env.PORT || 3001;
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 app.use("/lojas", lojasRoutes);
 app.use("/cupons", cuponsRoutes);
 app.use("/descontos", descontosRoutes);
+app.use("/categorias", categoriasRoutes);
 
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
