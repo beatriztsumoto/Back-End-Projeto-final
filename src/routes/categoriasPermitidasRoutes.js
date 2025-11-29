@@ -1,5 +1,5 @@
 import express from "express";
-import { listarCategorias } from "../controllers/categoriasController.js";
+import { listarCategorias } from "../controllers/categoriasPermitidasController.js";
 
 const router = express.Router();
 
