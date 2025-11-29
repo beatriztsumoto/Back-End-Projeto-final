@@ -1,6 +1,6 @@
 import * as lojaModel from '../models/lojasModels.js';
 
-const categoriasPermitidas = [
+export const categoriasPermitidas = [
     'Moda e Acessórios',
     'Tecnologia e Eletrônicos',
     'Casa, Decoração e Utensílios',
