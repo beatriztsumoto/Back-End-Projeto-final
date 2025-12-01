@@ -38,3 +38,13 @@ export const atualizar = async (id, dado) => {
         data: dado
     });
 }
+
+export const buscarRelacionados = async (id) => {
+  return await prisma.lOJA.findUnique({
+    where: { ID_LOJA: id },
+    include: {
+      CUPONS: true,
+      DESCONTOS: true,
+    },
+  });
+};

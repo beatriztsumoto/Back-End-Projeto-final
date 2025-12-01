@@ -8,5 +8,6 @@ router.get("/:id", lojasController.buscarPorId);
 router.post("/", lojasController.criar);
 router.delete("/:id", lojasController.deletar);
 router.put("/:id", lojasController.atualizar);
+router.get("/:id/relacionados", lojasController.buscarRelacionados);
 
 export default router;

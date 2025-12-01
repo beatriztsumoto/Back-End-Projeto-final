@@ -380,3 +380,41 @@ export const atualizar = async (req, res) => {
     });
   }
 };
+
+export const buscarRelacionados = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    if (isNaN(id)) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "ID requisitado não é um número",
+      });
+    }
+
+    const loja = await lojaModel.buscarRelacionados(id);
+
+    if (!loja) {
+      return res.status(404).json({
+        status: 404,
+        success: false,
+        message: "Loja não encontrada",
+      });
+    }
+
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      message: "Loja e itens relacionados encontrados",
+      loja,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      error: "Erro interno de servidor",
+      details: error.message,
+    });
+  }
+};
