@@ -79,6 +79,7 @@ export const listarTodos = async (req, res) => {
           ID_LOJA: loja.ID_LOJA,
           NOME_FANTASIA: loja.NOME_FANTASIA,
           LOGO: loja.LOGO,
+          ENDERECO: loja.ENDERECO
         }))
       );
     }
