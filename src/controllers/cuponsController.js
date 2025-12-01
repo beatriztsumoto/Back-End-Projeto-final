@@ -2,7 +2,7 @@ import * as cuponsModel from "../models/cuponsModels.js";
 
 export const listarTodos = async (req, res) => {
   try {
-    const { nome_loja, endereco_loja, codigo } = req.query;
+    const { nome_loja, endereco_loja, codigo, modo, titulo } = req.query;
 
     const filtros = {};
 
@@ -65,6 +65,44 @@ export const listarTodos = async (req, res) => {
             " foi encontrado",
         });
       }
+    }
+
+    if (modo === "autocomplete") {
+      const { busca } = req.query;
+
+      if (!busca) {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          message: "É necessário digitar um título ou código",
+        });
+      }
+
+      const filtros = {
+        OR: [
+          { TITULO: { contains: busca, mode: "insensitive" } },
+          { CODIGO: { contains: busca, mode: "insensitive" } },
+        ],
+      };
+
+      const cupons = await cuponsModel.listarTodos(filtros);
+
+      if (!cupons || cupons.length === 0) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message:
+            "Não foi encontrado nenhum cupom com esse título ou código",
+        });
+      }
+
+      return res.status(200).json(
+        cupons.map((c) => ({
+          ID_LOJA: c.ID_LOJA,
+          TITULO: c.TITULO,
+          CODIGO: c.CODIGO,
+        }))
+      );
     }
 
     return res.status(200).json({
@@ -285,7 +323,7 @@ export const atualizarCupom = async (req, res) => {
         message: "Cupom não encontrado",
         error: "CUPOM_NOT_FOUND",
         suggestion: "Verifique se o cupom está registrado",
-      })
+      });
     }
 
     const camposObrigatorios = [
@@ -363,7 +401,7 @@ export const atualizarCupom = async (req, res) => {
         error: "CANNOT_CHANGE_STORE",
         message: "Não é permitido alterar a loja proprietária do cupom",
         suggestion: "Mantenha o mesmo ID_LOJA do cupom original",
-      })
+      });
     }
 
     if (!lojaExiste) {
