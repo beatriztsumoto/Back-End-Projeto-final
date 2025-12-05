@@ -270,7 +270,7 @@ export const criar = async (req, res) => {
     return res.status(201).json({
       status: 201,
       success: true,
-      message: "Nova desconto criado com sucesso",
+      message: "Novo desconto criado com sucesso",
       desconto: {
         ...novoDesconto,
         VALOR_DESCONTO: Number(novoDesconto.VALOR_DESCONTO).toFixed(2),

@@ -212,7 +212,7 @@ export const criar = async (req, res) => {
       return res.status(400).json({
         status: 400,
         success: false,
-        message: "O telefone deve conter apenas numeros",
+        message: "O telefone deve conter apenas números",
         error: "INVALID_PHONE",
         suggestion: ["Verifique se o telefone está nesse formato: 19876781098"],
       });
@@ -224,7 +224,7 @@ export const criar = async (req, res) => {
     return res.status(201).json({
       status: 201,
       success: true,
-      message: "Nova loja cadastrada com sucesso",
+      message: "Nova loja cadastrada com sucesso!",
       loja: novaLoja,
     });
   } catch (error) {
@@ -264,7 +264,7 @@ export const deletar = async (req, res) => {
     return res.status(200).json({
       status: 200,
       success: true,
-      message: "Loja deletada com sucesso",
+      message: "Loja deletada com sucesso!",
     });
   } catch (error) {
     return res.status(500).json({
@@ -355,7 +355,7 @@ export const atualizar = async (req, res) => {
         return res.status(400).json({
           status: 400,
           success: false,
-          message: "O telefone deve conter apenas numeros",
+          message: "O telefone deve conter apenas números",
           error: "INVALID_PHONE",
           suggestion: [
             "Verifique se o telefone está nesse formato: 19876781098",
