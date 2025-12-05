@@ -8,29 +8,29 @@ datasource db {
 }
 
 model LOJA {
-  ID_LOJA           Int         @id @default(autoincrement())
-  NOME_SOCIAL       String      @db.VarChar(100)
-  NOME_FANTASIA     String      @db.VarChar(100)
-  LOGO              String?     @db.VarChar(1000)
-  CNPJ              String      @db.Char(14)
-  TELEFONE_COMERCIAL String     @db.Char(11)
-  ENDERECO          String      @db.VarChar(300)
-  CATEGORIA         String        @db.VarChar(100)
+  ID_LOJA            Int     @id @default(autoincrement())
+  NOME_SOCIAL        String  @db.VarChar(100)
+  NOME_FANTASIA      String  @db.VarChar(100)
+  LOGO               String? @db.VarChar(1000)
+  CNPJ               String  @db.Char(14)
+  TELEFONE_COMERCIAL String  @db.Char(11)
+  ENDERECO           String  @db.VarChar(300)
+  CATEGORIA          String  @db.VarChar(100)
 
-  DESCONTOS         DESCONTOS[]
-  CUPONS            CUPONS[]
+  DESCONTOS DESCONTOS[]
+  CUPONS    CUPONS[]
 }
 
 model DESCONTOS {
-  ID_DESCONTO      Int      @id @default(autoincrement())
-  TITULO           String   @db.VarChar(200)
-  FOTO_ITEM        String   @db.VarChar(1000)
-  VALOR_DESCONTO   Decimal  @db.Decimal(10, 2)
-  DESCRICAO        String   @db.VarChar(500)
-  CATEGORIA        String   @db.VarChar(100)
-  ID_LOJA          Int
+  ID_DESCONTO    Int     @id @default(autoincrement())
+  TITULO         String  @db.VarChar(200)
+  FOTO_ITEM      String  @db.VarChar(1000)
+  VALOR_DESCONTO Decimal @db.Decimal(10, 2)
+  DESCRICAO      String  @db.VarChar(500)
+  CATEGORIA      String  @db.VarChar(100)
+  ID_LOJA        Int
 
-  LOJA             LOJA     @relation(fields: [ID_LOJA], references: [ID_LOJA])
+  LOJA LOJA @relation(fields: [ID_LOJA], references: [ID_LOJA])
 }
 
 model CUPONS {
@@ -38,9 +38,9 @@ model CUPONS {
   TITULO      String   @db.VarChar(200)
   DESCRICAO   String   @db.VarChar(500)
   CODIGO      String   @db.VarChar(20)
+  DATA_INICIO DateTime @db.Date
   VALIDADE    DateTime @db.Date
   ID_LOJA     Int
 
-  LOJA        LOJA     @relation(fields: [ID_LOJA], references: [ID_LOJA])
+  LOJA LOJA @relation(fields: [ID_LOJA], references: [ID_LOJA])
 }
-

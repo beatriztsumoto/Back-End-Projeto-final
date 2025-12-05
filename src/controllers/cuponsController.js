@@ -2,7 +2,8 @@ import * as cuponsModel from "../models/cuponsModels.js";
 
 export const listarTodos = async (req, res) => {
   try {
-    const { nome_loja, endereco_loja, codigo, modo, titulo } = req.query;
+    const { nome_loja, endereco_loja, codigo, data_inicio_filtro, modo } =
+      req.query;
 
     const filtros = {};
 
@@ -22,11 +23,30 @@ export const listarTodos = async (req, res) => {
       };
     }
 
-    // filtro por código de cupom
     if (codigo) {
       filtros.CODIGO = {
         contains: codigo,
         mode: "insensitive",
+      };
+    }
+
+    if (data_inicio_filtro) {
+      const dataNormalizada = data_inicio_filtro.replace(/\//g, "-");
+      const dataDeBusca = new Date(dataNormalizada);
+
+      // Validação de data
+      if (isNaN(dataDeBusca.getTime())) {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          error: "INVALID_DATE_FORMAT",
+          message: "A data de início deve ser uma data válida.",
+          details: "Use o formato YYYY-MM-DD ou ISO.",
+        });
+      }
+
+      filtros.DATA_INICIO = {
+        gte: dataDeBusca,
       };
     }
 
@@ -65,6 +85,17 @@ export const listarTodos = async (req, res) => {
             " foi encontrado",
         });
       }
+
+      if (data_inicio_filtro) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          total: 0,
+          message:
+            "Nenhum cupom encontrado com início a partir da data " +
+            data_inicio_filtro,
+        });
+      }
     }
 
     if (modo === "autocomplete") {
@@ -91,8 +122,7 @@ export const listarTodos = async (req, res) => {
         return res.status(404).json({
           status: 404,
           success: false,
-          message:
-            "Não foi encontrado nenhum cupom com esse título ou código",
+          message: "Não foi encontrado nenhum cupom com esse título ou código",
         });
       }
 
@@ -209,6 +239,7 @@ export const criarCupom = async (req, res) => {
       "TITULO",
       "DESCRICAO",
       "CODIGO",
+      "DATA_INICIO",
       "VALIDADE",
       "ID_LOJA",
     ];
@@ -226,10 +257,26 @@ export const criarCupom = async (req, res) => {
     }
 
     // Normaliza datas com "/"
-    const dataNormalizada = dado.VALIDADE.replace(/\//g, "-");
+    const dataInicioStr = dado.DATA_INICIO.replace(/\//g, "-");
+    const validadeStr = dado.VALIDADE.replace(/\//g, "-");
 
-    // Validação de data
-    const validade = new Date(dataNormalizada);
+    // Converte datas
+    const dataInicio = new Date(dataInicioStr);
+    const validade = new Date(validadeStr);
+
+    // Valida DATA_INICIO
+    if (isNaN(dataInicio.getTime())) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "INVALID_DATE",
+        message:
+          "O campo DATA_INICIO deve ser uma data válida no formato DateTime.",
+        details: "A data de início deve estar no formato YYYY-MM-DD ou ISO.",
+      });
+    }
+
+    // Valida VALIDADE
     if (isNaN(validade.getTime())) {
       return res.status(400).json({
         status: 400,
@@ -241,22 +288,43 @@ export const criarCupom = async (req, res) => {
       });
     }
 
-    dado.VALIDADE = validade;
+    // Verifica se datas estão no passado
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
 
-    // Verifica se a data está no passado
-    const dataAtual = new Date();
-    dataAtual.setHours(0, 0, 0, 0);
-
-    if (validade < dataAtual) {
+    if (dataInicio < hoje) {
       return res.status(400).json({
         status: 400,
         success: false,
         error: "PAST_DATE",
-        message: "A data de validade não pode ser anterior à data atual.",
-        details: "Insira uma data futura.",
-        currentDate: dataAtual,
+        message: "A DATA_INICIO não pode ser anterior à data atual.",
+        currentDate: hoje,
       });
     }
+
+    if (validade < hoje) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "PAST_DATE",
+        message: "A VALIDADE não pode ser anterior à data atual.",
+        currentDate: hoje,
+      });
+    }
+
+    // Verifica se validade é depois do início
+    if (validade < dataInicio) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "INVALID_RANGE",
+        message: "A VALIDADE não pode ser anterior à DATA_INICIO.",
+      });
+    }
+
+    // Salvar datas corrigidas no objeto
+    dado.DATA_INICIO = dataInicio;
+    dado.VALIDADE = validade;
 
     const codigoExiste = await cuponsModel.buscarPorCodigo(dado.CODIGO);
 
@@ -346,11 +414,24 @@ export const atualizarCupom = async (req, res) => {
       });
     }
 
-    // Normaliza datas com "/"
-    const dataNormalizada = dado.VALIDADE.replace(/\//g, "-");
+    const dataInicioStr = dado.DATA_INICIO.replace(/\//g, "-");
+    const validadeStr = dado.VALIDADE.replace(/\//g, "-");
 
-    // Validação de data
-    const validade = new Date(dataNormalizada);
+    const dataInicio = new Date(dataInicioStr);
+    const validade = new Date(validadeStr);
+
+    // Valida DATA_INICIO
+    if (isNaN(dataInicio.getTime())) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "INVALID_DATE",
+        message:
+          "O campo DATA_INICIO deve ser uma data válida no formato DateTime.",
+        details: "A data de início deve estar no formato YYYY-MM-DD ou ISO.",
+      });
+    }
+
     if (isNaN(validade.getTime())) {
       return res.status(400).json({
         status: 400,
@@ -362,12 +443,9 @@ export const atualizarCupom = async (req, res) => {
       });
     }
 
-    dado.VALIDADE = validade;
-
-    // Verifica se a data está no passado
     const dataAtual = new Date();
-    dataAtual.setHours(0, 0, 0, 0);
 
+    dataAtual.setHours(0, 0, 0, 0);
     if (validade < dataAtual) {
       return res.status(400).json({
         status: 400,
@@ -378,6 +456,19 @@ export const atualizarCupom = async (req, res) => {
         currentDate: dataAtual,
       });
     }
+
+    if (validade < dataInicio) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "INVALID_RANGE",
+        message: "A VALIDADE não pode ser anterior à DATA_INICIO.",
+      });
+    }
+
+    // Salvar datas corrigidas no objeto
+    dado.DATA_INICIO = dataInicio;
+    dado.VALIDADE = validade;
 
     const codigoExiste = await cuponsModel.buscarPorCodigo(dado.CODIGO);
 
