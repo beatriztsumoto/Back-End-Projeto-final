@@ -438,7 +438,7 @@ const lojas = [
   { nome: 'Subway', logo: 'https://public.esperienza.com.br/boulevardvilavelha-H8Rr3TPmDkz4cyzpnHEsXKRXEEYT2Fsg/loja/120-1-2-2024-VF9E6J0YFG.png', categoria: 'Alimentação e Delivery' },
   { nome: 'Pizza Hut', logo: 'https://mir-s3-cdn-cf.behance.net/project_modules/hd/3ba71356998433.59c455556b853.png', categoria: 'Alimentação e Delivery' },
   { nome: 'Pão de Açúcar', logo: 'https://upload.wikimedia.org/wikipedia/pt/d/dd/Logomarca_do_P%C3%A3o_de_A%C3%A7%C3%BAcar_%28supermercado%29.png', categoria: 'Alimentação e Delivery' },
-  { nome: 'Carrefour Express', logo: 'https://publicimages.brmalls.com.br/shoppings/ATEA-115QD7.PNG', categoria: 'Alimentação e Delivery' },
+  { nome: 'Carrefour Express', logo: 'https://sal.madnezz.com.br/api/site/upload/Loja/201808171640201.png', categoria: 'Alimentação e Delivery' },
   { nome: 'Roldão Atacadista', logo: 'https://images-service.weare365.io/h:0/w:1920/f:webp/plain/gs://agentgoat-prod-strapi-images/Roldao_cc1dbc7c66.png', categoria: 'Alimentação e Delivery' },
   { nome: 'Assaí Atacadista', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Assa%C3%AD_Atacadista_logo_2024.svg/1200px-Assa%C3%AD_Atacadista_logo_2024.svg.png', categoria: 'Alimentação e Delivery' },
   { nome: 'Droga Raia', logo: 'https://www.masterambiental.com.br/wp-content/uploads/2023/07/droga-raia.png', categoria: 'Saúde e Farmácia' },
