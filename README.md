@@ -72,4 +72,11 @@ Caso deseje utilizar para outros fins, entre em contato com os autores.
 
 ---
 
-Feito por [Beatriz Tsumoto], [Victor Boehm], [Julia Degrava], [Nathalia Nascimento], [Melissa Freitas], [Pedro Brito]
+Feito por Beatriz Tsumoto, Victor Boehm, Julia Degrava, Nathalia Nascimento, Melissa Freitas, Pedro Brito
+
+https://github.com/beatriztsumoto
+https://github.com/vboehm09
+https://github.com/juliadegrava
+https://github.com/NathaliaNascimentoReis
+https://github.com/Melfreitass
+https://github.com/PedrohBrito
