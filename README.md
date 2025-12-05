@@ -8,7 +8,7 @@ Este repositório contém a implementação do back-end e a estrutura de banco d
 
 ## Tecnologias Utilizadas
 
--![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) 
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) 
 - <img src="https://img.shields.io/badge/Node.js-43853D?logo=node.js&logoColor=fff" alt="Tecnologia: Node.js"/>
 - <img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=fff" alt="Tecnologia: PostgreSQL"/>
 
