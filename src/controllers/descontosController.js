@@ -24,7 +24,7 @@ export const listarTodos = async (req, res) => {
     const filtros = {};
 
     if (modo === "autocomplete") {
-        const { busca } = req.query;
+      const { busca } = req.query;
 
       if (!busca) {
         return res.status(400).json({
@@ -315,6 +315,7 @@ export const deletar = async (req, res) => {
       status: 200,
       success: true,
       message: "Desconto deletado com sucesso",
+      descontoDeletado: descontoExiste,
     });
   } catch (error) {
     return res.status(500).json({
