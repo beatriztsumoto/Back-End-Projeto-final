@@ -220,7 +220,7 @@ export const deletarPorId = async (req, res) => {
       status: 200,
       success: true,
       message: "Cupom deletado com sucesso!",
-      cupom: cupomExiste,
+      cupomDeletado: cupomExiste,
     });
   } catch (error) {
     return res.status(500).json({

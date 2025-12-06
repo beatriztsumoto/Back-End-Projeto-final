@@ -40,11 +40,13 @@ export const listarTodos = async (req, res) => {
 
     // Filtro por categoria
     if (categoria) {
-      const permitido = categoriasPermitidas
-        .map((c) => c.toLowerCase())
-        .includes(categoria.toLowerCase());
+      const categoriaBusca = categoria.toLowerCase().trim();
 
-      if (!permitido) {
+      const naoEncontradaNaLista = !categoriasPermitidas.some((c) =>
+        c.toLowerCase().includes(categoriaBusca)
+      );
+
+      if (naoEncontradaNaLista) {
         return res.status(400).json({
           status: 400,
           error: "Categoria inválida",
@@ -73,13 +75,21 @@ export const listarTodos = async (req, res) => {
       });
     }
 
+    if (modo === "autocomplete" && !nome && !endereco) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "É necessário digitar um termo de busca no nome da loja.",
+      });
+    }
+
     if (modo === "autocomplete") {
       return res.status(200).json(
         lojas.map((loja) => ({
           ID_LOJA: loja.ID_LOJA,
           NOME_FANTASIA: loja.NOME_FANTASIA,
           LOGO: loja.LOGO,
-          ENDERECO: loja.ENDERECO
+          ENDERECO: loja.ENDERECO,
         }))
       );
     }
@@ -165,7 +175,7 @@ export const criar = async (req, res) => {
       });
     }
 
-    //Validade se cnpj já existe
+    //Valida se cnpj já existe
     const cnpjExiste = await lojaModel.buscarPorCnpj(dado.CNPJ);
 
     if (cnpjExiste) {
@@ -265,6 +275,7 @@ export const deletar = async (req, res) => {
       status: 200,
       success: true,
       message: "Loja deletada com sucesso!",
+      lojaDeletada: lojaExiste,
     });
   } catch (error) {
     return res.status(500).json({
@@ -301,7 +312,7 @@ export const atualizar = async (req, res) => {
 
     const dado = req.body;
 
-    //Validade se cnpj já existe
+    //Valida se cnpj já existe
     if (dado.CNPJ && dado.CNPJ !== lojaExiste.CNPJ) {
       const cnpjExiste = await lojaModel.buscarPorCnpj(dado.CNPJ);
 
@@ -410,7 +421,6 @@ export const buscarRelacionados = async (req, res) => {
       message: "Loja e itens relacionados encontrados",
       loja,
     });
-
   } catch (error) {
     return res.status(500).json({
       status: 500,
