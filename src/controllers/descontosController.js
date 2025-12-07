@@ -51,6 +51,7 @@ export const listarTodos = async (req, res) => {
 
       return res.status(200).json(
         descontos.map((d) => ({
+          ID_DESCONTO: d.ID_DESCONTO,
           ID_LOJA: d.ID_LOJA,
           TITULO: d.TITULO,
         }))
