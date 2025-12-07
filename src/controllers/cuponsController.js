@@ -128,6 +128,7 @@ export const listarTodos = async (req, res) => {
 
       return res.status(200).json(
         cupons.map((c) => ({
+          ID_CUPOM: c.ID_CUPOM,
           ID_LOJA: c.ID_LOJA,
           TITULO: c.TITULO,
           CODIGO: c.CODIGO,
